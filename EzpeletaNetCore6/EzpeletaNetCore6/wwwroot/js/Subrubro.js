@@ -37,6 +37,11 @@ function AbrirModal() {
     $("#exampleModal").modal("show");
 }
 
+function CerrarModal() {
+    VaciarFormulario();
+    $("#exampleModal").modal("hide");
+}
+
 function VaciarFormulario() {
     $("#SubrubroID").val(0);
     $("#SubrubroNombre").val('');

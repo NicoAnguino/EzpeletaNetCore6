@@ -38,6 +38,11 @@ function AbrirModal() {
     $("#exampleModal").modal("show");
 }
 
+function CerrarModal() {
+    VaciarFormulario();
+    $("#exampleModal").modal("hide");
+}
+
 function GuardarRubro() {
     $("#Error-RubroNombre").text("");
 
