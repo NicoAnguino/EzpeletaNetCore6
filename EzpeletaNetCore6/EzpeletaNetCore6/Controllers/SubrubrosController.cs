@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EzpeletaNetCore6.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class SubrubrosController : Controller
     {
         private readonly ApplicationDbContext _context;

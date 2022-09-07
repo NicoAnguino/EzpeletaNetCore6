@@ -149,14 +149,19 @@ function GuardarArticulo() {
         $("#Error-SubrubroID").text("Debe seleccionar un Subrubro.");
     }
     if (guardar) {
+
+        var parametros = new FormData($("#frmFormulario")[0]);
         $.ajax({
             type: "POST",
             url: '../../Articulos/GuardarArticulo',
-            data: {
-                ArticuloID: articuloID, Descripcion: articuloNombre,
-                SubrubroID: subrubroID, Costo: costo,
-                Ganancia: ganancia, Venta: venta
-            },
+            //data: {
+            //    ArticuloID: articuloID, Descripcion: articuloNombre,
+            //    SubrubroID: subrubroID, Costo: costo,
+            //    Ganancia: ganancia, Venta: venta
+            //},
+            data: parametros,
+            contentType: false, //importante enviar este parametro en false
+            processData: false, //importante enviar este parametro en false
             success: function (resultado) {
                 if (resultado == 0) {
                     $("#exampleModal").modal("hide");

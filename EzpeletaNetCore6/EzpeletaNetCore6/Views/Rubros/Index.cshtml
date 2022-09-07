@@ -10,8 +10,6 @@
     <button class="btn btn-primary btn-sm" onclick="AbrirModal()">Nuevo Rubro</button>
 </p>
 
-@*<img style='display:block; width:200px;' src='data:@ViewBag.TipoImg;base64, @ViewBag.ImgBase64' />*@
-
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -42,10 +40,7 @@
                         <input type="text" class="form-control" style="text-transform:uppercase" autocomplete="off" required name="rubroNombre" id="RubroNombre">
                         <p id="Error-RubroNombre"></p>
                     </div>
-                    <div class="form-group">
-                        <label for="recipient-name" class="control-label">Archivo Adjunto:</label>
-                        <input type="file" name="archivo">
-                    </div>
+               
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="CerrarModal()" class="btn btn-danger" data-dismiss="modal">Cerrar</button>

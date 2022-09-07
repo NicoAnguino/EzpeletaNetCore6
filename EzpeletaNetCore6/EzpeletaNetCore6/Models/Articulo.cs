@@ -15,6 +15,9 @@ namespace EzpeletaNetCore6.Models
         public int SubrubroID { get; set; }
         public bool Eliminado { get; set; }
 
+        public byte[]? Img { get; set; }
+        public string? TipoImg { get; set; }
+
         public virtual Subrubro Subrubro { get; set; }
     }
 

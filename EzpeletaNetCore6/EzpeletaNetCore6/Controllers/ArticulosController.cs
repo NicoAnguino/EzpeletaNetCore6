@@ -10,7 +10,7 @@ namespace EzpeletaNetCore6.Controllers
 {
     //Add-Migration InitialCreated
     //Update-Database
-    //[Authorize]
+    [Authorize]
     public class ArticulosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -39,6 +39,9 @@ namespace EzpeletaNetCore6.Controllers
 
             //var unRegistro = db.Articulos.Where(p => p.PrecioVenta > 10).Single();
             //var unRegistroOVacio = db.Articulos.Where(p => p.PrecioVenta > 10).SingleOrDefault();
+
+            //ViewBag.TipoImg = rubro.TipoImg;
+            //ViewBag.ImgBase64 = Convert.ToBase64String(rubro.Img);
 
             var rubros = _context.Rubros.Where(p => p.Eliminado == false).ToList();
             rubros.Add(new Rubro { RubroID = 0, Descripcion = "[SELECCIONE UN RUBRO]" });
@@ -81,28 +84,53 @@ namespace EzpeletaNetCore6.Controllers
         }
 
 
-        public JsonResult GuardarArticulo(int ArticuloID, string Descripcion, int SubrubroID, string Costo, string Ganancia, string Venta)
+        public JsonResult GuardarArticulo(int articuloID, string articuloNombre, int subrubroID, string precioCosto, string porcentajeGanancia, string precioVenta, IFormFile archivo)
         {
             //CONFIGURACIÓN DE CULTURA ESPAÑOL ARGENTINA
             Thread.CurrentThread.CurrentCulture = new CultureInfo("es-AR");
             //PUNTO COMO DECIMAL
 
-            Costo = Costo.Replace(".", ",");
-            Ganancia = Ganancia.Replace(".", ",");
-            Venta = Venta.Replace(".", ",");
-            decimal costo = Convert.ToDecimal(Costo);
-            decimal ganancia = Convert.ToDecimal(Ganancia);
-            decimal venta = Convert.ToDecimal(Venta);
+            precioCosto = precioCosto.Replace(".", ",");
+            porcentajeGanancia = porcentajeGanancia.Replace(".", ",");
+            precioVenta = precioVenta.Replace(".", ",");
+            decimal costo = Convert.ToDecimal(precioCosto);
+            decimal ganancia = Convert.ToDecimal(porcentajeGanancia);
+            decimal venta = Convert.ToDecimal(precioVenta);
 
-            if (ArticuloID == 0)
+            byte[] img = null;
+            string tipoImg = null;
+
+            if (archivo != null)
+            {
+                if (archivo.Length > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        archivo.CopyTo(ms);
+                        img = ms.ToArray();
+                        tipoImg = archivo.ContentType;
+                        //string base64 = Convert.ToBase64String(img);
+                        // act on the Base64 data
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(articuloNombre))
+            {
+                articuloNombre = articuloNombre.ToUpper();
+            }
+
+            if (articuloID == 0)
             {
                 var articuloCrear = new Articulo
                 {
-                    Descripcion = Descripcion,
-                    SubrubroID = SubrubroID,
+                    Descripcion = articuloNombre,
+                    SubrubroID = subrubroID,
                     PrecioCosto = costo,
                     PorcentajeGanancia = ganancia,
                     PrecioVenta = venta,
+                    TipoImg = tipoImg,
+                    Img = img,
                     UltAct = DateTime.Now //FECHA Y HORA ACTUAL
                 };
                 _context.Add(articuloCrear);
@@ -110,10 +138,10 @@ namespace EzpeletaNetCore6.Controllers
             }
             else
             {
-                var articulo = _context.Articulos.Single(m => m.ArticuloID == ArticuloID);
+                var articulo = _context.Articulos.Single(m => m.ArticuloID == articuloID);
                 //CAMBIAMOS LA DESCRIPCIÓN POR LA QUE INGRESÓ EL USUARIO EN LA VISTA
-                articulo.Descripcion = Descripcion;
-                articulo.SubrubroID = SubrubroID;
+                articulo.Descripcion = articuloNombre;
+                articulo.SubrubroID = subrubroID;
                 if (articulo.PrecioCosto != costo || articulo.PrecioVenta != venta)
                 {
                     articulo.UltAct = DateTime.Now;
@@ -121,6 +149,11 @@ namespace EzpeletaNetCore6.Controllers
                 articulo.PrecioCosto = costo;
                 articulo.PorcentajeGanancia = ganancia;
                 articulo.PrecioVenta = venta;
+                if (tipoImg != null)
+                {
+                    articulo.TipoImg = tipoImg;
+                    articulo.Img = img;
+                }               
                 _context.SaveChanges();
             }
 

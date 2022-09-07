@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EzpeletaNetCore6.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class RubrosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,14 +19,7 @@ namespace EzpeletaNetCore6.Controllers
 
         // GET: Rubros
         public async Task<IActionResult> Index()
-        {
-            //ViewBag.RubrosID = new SelectList(_context.Rubros.OrderBy(p => p.RubroID), "RubroID", "Descripcion");
-
-            //var rubro = _context.Rubros.FirstOrDefault(m => m.RubroID == 1008);
-
-            //ViewBag.TipoImg = rubro.TipoImg;
-            //ViewBag.ImgBase64 = Convert.ToBase64String(rubro.Img);
-
+        {        
             return View(await _context.Rubros.ToListAsync());
         }
 
@@ -37,7 +30,7 @@ namespace EzpeletaNetCore6.Controllers
             return Json(rubros);
         }
 
-        public JsonResult GuardarRubro(int rubroID, string rubroNombre, IFormFile archivo)
+        public JsonResult GuardarRubro(int rubroID, string rubroNombre)
         {
             int resultado = 0;
 
@@ -46,26 +39,7 @@ namespace EzpeletaNetCore6.Controllers
             //SI ES 2 - EL REGISTRO YA EXISTE CON LA MISMA DESCRIPCION           
 
             if (!string.IsNullOrEmpty(rubroNombre))
-            {
-                //byte[] img = new byte[0];
-                byte[] img = null;
-                string tipoImg = null;
-
-                if (archivo != null)
-                {
-                    if (archivo.Length > 0)
-                    {
-                        using (var ms = new MemoryStream())
-                        {
-                            archivo.CopyTo(ms);
-                            img = ms.ToArray();
-                            tipoImg = archivo.ContentType;
-                            //string base64 = Convert.ToBase64String(img);
-                            // act on the Base64 data
-                        }
-                    }
-                }
-
+            {          
                 rubroNombre = rubroNombre.ToUpper();
                 if (rubroID == 0)
                 {
@@ -80,10 +54,8 @@ namespace EzpeletaNetCore6.Controllers
                         //PARA ESO CREAMOS UN OBJETO DE TIPO RUBRO CON LOS DATOS NECESARIOS
                         var rubro = new Rubro
                         {
-                            Descripcion = rubroNombre,
-                            TipoImg = tipoImg
-                        };
-                        rubro.Img = img;
+                            Descripcion = rubroNombre,                            
+                        };                        
                         _context.Add(rubro);
                         _context.SaveChanges();
                     }
@@ -101,13 +73,7 @@ namespace EzpeletaNetCore6.Controllers
                         //BUSCAMOS EL REGISTRO EN LA BASE DE DATOS
                         var rubro = _context.Rubros.Single(m => m.RubroID == rubroID);
                         //CAMBIAMOS LA DESCRIPCIÓN POR LA QUE INGRESÓ EL USUARIO EN LA VISTA
-                        rubro.Descripcion = rubroNombre;
-
-                        if (tipoImg != null)
-                        {
-                            rubro.TipoImg = tipoImg;
-                            rubro.Img = img;
-                        }
+                        rubro.Descripcion = rubroNombre;                      
                         _context.SaveChanges();
                     }
                 }
