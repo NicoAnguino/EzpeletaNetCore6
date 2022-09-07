@@ -9,5 +9,11 @@ namespace EzpeletaNetCore6.Data
             : base(options)
         {
         }
+
+        public DbSet<EzpeletaNetCore6.Models.Rubro> Rubros { get; set; }
+
+        public DbSet<EzpeletaNetCore6.Models.Subrubro> Subrubros { get; set; }
+
+        public DbSet<EzpeletaNetCore6.Models.Articulo> Articulos { get; set; }
     }
 }
