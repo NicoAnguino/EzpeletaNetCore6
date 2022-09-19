@@ -55,6 +55,16 @@ namespace EzpeletaNetCore6.Controllers
             return View();
         }
 
+        public JsonResult BuscarArticulosLista(string nombre)
+        {
+            //PRIMERO BUSCAR POR PERSONAS QUE NO TENGAN NOMBRE DE FANTASIA 
+            var articulos = _context.Articulos
+                                  .Where(x => x.Descripcion.Contains(nombre))
+                                  .Take(50)
+                                  .ToList();
+
+            return Json(articulos);
+        }
 
         public JsonResult BuscarArticulos()
         {

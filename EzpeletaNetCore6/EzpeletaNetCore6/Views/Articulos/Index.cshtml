@@ -6,9 +6,20 @@
 
 <h1>Listado de Artículos</h1>
 
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+
+
+<div class="mb-3">
+    <label for="txtCountryName" class="form-label">Búsqueda Autocompletada por Descripción:</label>
+    <input type="text" id="txtCountryName" class="form-control" placeholder="Ingrese el Nombre del Artículo a Buscar" />
+</div>
+
+
 <p>
     <button class="btn btn-primary btn-sm" onclick="AbrirModal()">Nuevo Artículo</button>
 </p>
+
 
 <table class="table table-bordered">
     <thead>
@@ -116,8 +127,49 @@
 
 @section Scripts {
     <script src="~/js/Articulo.js"></script>
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script>
         window.onload = CompletarTablaArticulos();
+    </script>
+
+
+
+    <script language="javascript" type="text/javascript">
+
+        $("#txtCountryName").autocomplete({
+            dataType: 'JSON',
+            source: function (request, response) {
+                jQuery.ajax({
+                    url: '/Articulos/BuscarArticulosLista',
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        nombre: request.term
+                    },
+                    success: function (data) {
+
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.articuloID,
+                                value: item.descripcion
+                            }
+                        }))
+                    }
+                })
+            },
+            //focus: function (event, ui) {
+            //    // this is for when focus of autocomplete item
+            //    alert(ui.item.value);
+            //    return false;
+            //},
+            select: function (e, ui) {
+                alert(ui.item.id);
+              
+            }
+        });
+
+
     </script>
 }
 
