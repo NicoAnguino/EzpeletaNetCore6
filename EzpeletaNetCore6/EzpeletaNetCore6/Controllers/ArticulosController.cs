@@ -66,9 +66,14 @@ namespace EzpeletaNetCore6.Controllers
             return Json(articulos);
         }
 
-        public JsonResult BuscarArticulos()
+        public JsonResult BuscarArticulos(int ArticuloID)
         {
-            var articulos = _context.Articulos.Include(p => p.Subrubro.Rubro).Where(p => p.PrecioVenta > 10).ToList();
+            var articulos = _context.Articulos.Include(p => p.Subrubro.Rubro).ToList();
+
+            if (ArticuloID > 0)
+            {
+                articulos = articulos.Where(p => p.ArticuloID == ArticuloID).ToList();
+            }
 
             //CREAMOS EL OBJETO DE VISTA EN FORMA DE LISTADO
             List<VistaArticulo> articulosMostrar = new List<VistaArticulo>();
@@ -85,7 +90,8 @@ namespace EzpeletaNetCore6.Controllers
                     UltActString = articulo.UltAct.ToString("dd/MM/yyyy"),
                     PrecioCosto = articulo.PrecioCosto,
                     PorcentajeGanancia = articulo.PorcentajeGanancia,
-                    PrecioVenta = articulo.PrecioVenta
+                    PrecioVenta = articulo.PrecioVenta,
+                    Eliminado = articulo.Eliminado
                 };
                 articulosMostrar.Add(articuloMostrar);
             }
@@ -192,6 +198,21 @@ namespace EzpeletaNetCore6.Controllers
             };
 
             return Json(articuloMostrar);
+        }
+
+        public JsonResult DesactivarActivarArticulo(int ArticuloID, int Accion)
+        {
+            Articulo articulo = _context.Articulos.Find(ArticuloID);
+            if (Accion == 1)
+            {
+                articulo.Eliminado = true;
+            }
+            else
+            {
+                articulo.Eliminado = false;
+            }
+            _context.SaveChanges();
+            return Json(true);
         }
     }
 }

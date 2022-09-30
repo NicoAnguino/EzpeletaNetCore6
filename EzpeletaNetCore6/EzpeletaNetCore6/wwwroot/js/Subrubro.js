@@ -10,7 +10,7 @@
 
                 let claseEliminado = '';
                 let botones = '<button type="button" onclick="BuscarSubRubro(' + subrubro.subrubroID + ')" class="btn btn-primary btn-sm" style="margin-right:5px">Editar</button>' +
-                    '<button type="button" onclick="EliminarSubrubro(' + subrubro.subrubroID + ',1)" class="btn btn-danger btn-sm">Eliminar</button>';
+                    '<button type="button" onclick="EliminarSubrubro(' + subrubro.subrubroID + ',1)" class="btn btn-danger btn-sm">Desactivar</button>';
 
                 if (subrubro.eliminado) {
                     claseEliminado = 'table-danger';

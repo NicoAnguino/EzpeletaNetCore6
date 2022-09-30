@@ -1,16 +1,17 @@
 ﻿function CompletarTablaArticulos() {
     VaciarFormulario();
+    let articuloID = $("#ArticuloIDBuscar").val();
     $.ajax({
         type: "POST",
         url: '../../Articulos/BuscarArticulos',
-        data: {},
+        data: { ArticuloID: articuloID },
         success: function (listadoArticulos) {
             $("#tbody-articulos").empty();
             $.each(listadoArticulos, function (index, articulo) {
 
                 let claseEliminado = '';
                 let botones = '<button type="button" onclick="BuscarArticulo(' + articulo.articuloID + ')" class="btn btn-primary btn-sm" style="margin-right:5px">Editar</button>' +
-                    '<button type="button" onclick="EliminarArticulo(' + articulo.articuloID + ',1)" class="btn btn-danger btn-sm">Eliminar</button>';
+                    '<button type="button" onclick="EliminarArticulo(' + articulo.articuloID + ',1)" class="btn btn-danger btn-sm">Desactivar</button>';
 
                 if (articulo.eliminado) {
                     claseEliminado = 'table-danger';
@@ -35,6 +36,42 @@
         }
     });
 }
+
+
+$("#txtCountryName").autocomplete({
+    dataType: 'JSON',
+    source: function (request, response) {
+        jQuery.ajax({
+            url: '/Articulos/BuscarArticulosLista',
+            type: "post",
+            dataType: "json",
+            data: {
+                nombre: request.term
+            },
+            success: function (data) {
+
+                $("#ArticuloIDBuscar").val(0);
+
+                response($.map(data, function (item) {
+                    return {
+                        id: item.articuloID,
+                        value: item.descripcion
+                    }
+                }))
+            }
+        })
+    },
+    //focus: function (event, ui) {
+    //    // this is for when focus of autocomplete item
+    //    alert(ui.item.value);
+    //    return false;
+    //},
+    select: function (e, ui) {
+        $("#ArticuloIDBuscar").val(ui.item.id);
+        CompletarTablaArticulos();
+
+    }
+});
 
 function AbrirModal() {
     $("#Titulo-Modal-Articulo").text("Nuevo Articulo");
@@ -192,6 +229,20 @@ function BuscarArticulo(articuloID) {
             $("#PrecioVenta").val(articulo.precioVenta.toFixed(2));
             $("#SubrubroID").val(articulo.subrubroID);
             $("#exampleModal").modal("show");
+        },
+        error: function (data) {
+        }
+    });
+}
+
+
+function EliminarArticulo(articuloID, accion) {
+    $.ajax({
+        type: "POST",
+        url: '../../Articulos/DesactivarActivarArticulo',
+        data: { ArticuloID: articuloID, Accion: accion },
+        success: function (articulo) {
+            CompletarTablaArticulos();
         },
         error: function (data) {
         }

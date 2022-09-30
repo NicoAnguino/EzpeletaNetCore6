@@ -12,7 +12,7 @@ function CompletarTablaRubros() {
 
                 let claseEliminado = '';
                 let botones = '<button type="button" onclick="BuscarRubro(' + rubro.rubroID + ')" class="btn btn-primary btn-sm" style="margin-right:5px">Editar</button>' +
-                    '<button type="button" onclick="EliminarRubro(' + rubro.rubroID + ',1)" class="btn btn-danger btn-sm">Eliminar</button>';
+                    '<button type="button" onclick="EliminarRubro(' + rubro.rubroID + ',1)" class="btn btn-danger btn-sm">Desactivar</button>';
 
                 if (rubro.eliminado) {
                     claseEliminado = 'table-danger';
