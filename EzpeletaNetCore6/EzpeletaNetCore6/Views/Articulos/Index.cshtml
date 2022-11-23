@@ -13,7 +13,7 @@
 <div class="mb-3">
     <label for="txtCountryName" class="form-label">Búsqueda Autocompletada por Descripción:</label>
     <input type="hidden" id="ArticuloIDBuscar" value="0" />
-    <input type="text" id="txtCountryName" class="form-control" placeholder="Ingrese el Nombre del Artículo a Buscar" />
+    <input type="text" id="ArticuloNombreBuscar" onKeyUp="FiltrarArticulo()" onKeyDown="FiltrarArticulo()" style="text-transform:uppercase" class="form-control" placeholder="Ingrese el Nombre del Artículo a Buscar" />
 </div>
 
 
@@ -132,22 +132,23 @@
 
 @section Scripts {
  
-    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+    <script src="~/js/jquery/jquery-1.9.1.js"></script>
+    <script src="~/js/jquery/jquery-ui.js"></script>
     <script src="~/js/Articulo.js"></script>
+
     <script type="text/javascript">
         window.onload = CompletarTablaArticulos();
     </script>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
-    <script src="~/js/jspdf.debug.js"></script>
-    <script src="~/js/jspdf.plugin.autotable.js"></script>
+ 
     <script type="text/javascript">
         function Imprimir() {
 
 
             //const doc = new jsPDF();
+
             var doc = new jsPDF('l', 'mm', [297, 210]);
 
             var totalPagesExp = "{total_pages_count_string}";
@@ -226,29 +227,29 @@
                     fillColor: [255, 255, 255],
                 },
                 columnStyles: {
-                    0: { columnWidth: 50 },//FECHA
-                    1: { columnWidth: 30 },
-                    2: { columnWidth: 20 },
+                    0: { columnWidth: 60 },//FECHA
+                    1: { columnWidth: 45 },
+                    2: { columnWidth: 45 },
                     3: { columnWidth: 20 },
-                    4: { columnWidth: 26 },
+                    4: { columnWidth: 33 },
                     5: { columnWidth: 30 },
-                    6: { columnWidth: 24 },
+                    6: { columnWidth: 35 },
                 },
                 createdHeaderCell: function (cell, opts) {
-                    if (opts.column.index == 0 || opts.column.index == 2 || opts.column.index == 3) {
+                    if (opts.column.index == 3) {
                         cell.styles.halign = 'center';
                     }
-                    if (opts.column.index == 6) {
+                    if (opts.column.index == 4 || opts.column.index == 5 || opts.column.index == 6) {
                         cell.styles.halign = 'right';
                     }
                     cell.styles.fontSize = 8;
                 },
                 createdCell: function (cell, opts) {
                     cell.styles.fontSize = 7;
-                    if (opts.column.index == 0 || opts.column.index == 2 || opts.column.index == 3) {
+                    if (opts.column.index == 3) {
                         cell.styles.halign = 'center';
                     }
-                    if (opts.column.index == 6) {
+                    if (opts.column.index == 4 || opts.column.index == 5 || opts.column.index == 6) {
                         cell.styles.halign = 'right';
                     }
                 }
@@ -263,14 +264,14 @@
 
             // Output as Data URI.
 
-            var string = doc.output('datauristring');
-            var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
+            //var string = doc.output('datauristring');
+            //var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
 
-            var x = window.open();
-            x.document.open();
-            x.document.write(iframe);
-            x.document.close();
-            //doc.save('table.pdf');
+            //var x = window.open();
+            //x.document.open();
+            //x.document.write(iframe);
+            //x.document.close();
+            doc.save('archivo.pdf');
         }
     </script>
 }

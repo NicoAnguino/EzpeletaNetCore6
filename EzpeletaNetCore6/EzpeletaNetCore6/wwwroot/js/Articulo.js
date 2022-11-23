@@ -37,8 +37,17 @@
     });
 }
 
+function FiltrarArticulo() {
+    //alert(articuloID);
+    var nombre = $("#ArticuloNombreBuscar").val();
+    var articuloID = $("#ArticuloIDBuscar").val();
+    if (nombre == "" && articuloID != 0) {
+        $("#ArticuloIDBuscar").val(0);
+        CompletarTablaArticulos();
+    }
+}
 
-$("#txtCountryName").autocomplete({
+$("#ArticuloNombreBuscar").autocomplete({
     dataType: 'JSON',
     source: function (request, response) {
         jQuery.ajax({
@@ -49,8 +58,6 @@ $("#txtCountryName").autocomplete({
                 nombre: request.term
             },
             success: function (data) {
-
-                $("#ArticuloIDBuscar").val(0);
 
                 response($.map(data, function (item) {
                     return {
