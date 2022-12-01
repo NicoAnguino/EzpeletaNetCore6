@@ -114,6 +114,13 @@ namespace EzpeletaNetCore6.Controllers
             return Json(new SelectList(subRubros, "SubrubroID", "Descripcion"));
         }
 
+        public JsonResult BuscarSubrubro(int SubrubroID)
+        {
+            var subRubro = _context.Subrubros.FirstOrDefault(m => m.SubrubroID == SubrubroID);
+
+            return Json(subRubro);
+        }
+
         public JsonResult EliminarSubrubro(int SubrubroID, int Elimina)
         {
             int resultado = 0;
