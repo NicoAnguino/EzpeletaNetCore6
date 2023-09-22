@@ -11,11 +11,14 @@ namespace EzpeletaNetCore6.Data
         {
         }
 
-        public DbSet<Rubro> Rubros { get; set; }
-        public DbSet<Subrubro> Subrubros { get; set; }
-        public DbSet<Articulo> Articulos { get; set; }
-        public DbSet<TipoEjercicioFisico> TiposEjerciciosFisicos { get; set; }
-        public DbSet<EjercicioFisico> EjerciciosFisicos { get; set; }
+        public DbSet<Models.CategoriaComercial.Rubro> Rubros { get; set; }
+        public DbSet<Models.CategoriaComercial.Subrubro> Subrubros { get; set; }
+        public DbSet<Models.CategoriaComercial.Articulo> Articulos { get; set; }
+        
+        public DbSet<Models.ActividadFisica.TipoEjercicioFisico> TiposEjerciciosFisicos { get; set; }
+        public DbSet<Models.ActividadFisica.EjercicioFisico> EjerciciosFisicos { get; set; }
+
+        public DbSet<Models.GestionTarea.Tarea> Tareas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

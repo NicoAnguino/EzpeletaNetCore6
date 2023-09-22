@@ -1,5 +1,5 @@
 ﻿using EzpeletaNetCore6.Data;
-using EzpeletaNetCore6.Models;
+using EzpeletaNetCore6.Models.CategoriaComercial;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

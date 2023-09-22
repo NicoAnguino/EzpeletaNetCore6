@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EzpeletaNetCore6.Models
+namespace EzpeletaNetCore6.Models.CategoriaComercial
 {
     public class Articulo
     {

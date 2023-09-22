@@ -1,0 +1,223 @@
+﻿@model IEnumerable<EzpeletaNetCore6.Models.GestionTarea.Tarea>
+
+@{
+    ViewData["Title"] = "Listado de Tareas";
+}
+
+<h2>Listado de Tareas</h2>
+
+
+<div class="row">
+    <p class="col-6">
+        <button class="btn btn-primary btn-sm" onclick="AbrirModal()">Nuevo Tarea</button>
+    </p>
+
+    <p class="col-6 text-right">
+        <button class="btn btn-success btn-sm" onclick="Imprimir()">Imprimir</button>
+    </p>
+</div>
+
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Tareas Pendientes y Realizadas
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Fecha
+                    </th>
+                    <th>
+                        Descripción
+                    </th>
+                    <th class="text-center">
+                        Prioridad
+                    </th>
+                    <th class="text-center">
+                        Estado
+                    </th>
+                    <th class="text-center" style="width:130px">Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-tareas">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<table id="imprimir" style="display: none;">
+    <thead>
+        <tr>
+            <th>
+                Fecha
+            </th>
+            <th>
+                Descripción
+            </th>
+            <th>
+                Prioridad
+            </th>
+            <th>
+                Estado
+            </th>
+        </tr>
+    </thead>
+    <tbody id="tbody-tareas-imprimir">
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="Titulo-Modal-Tarea"></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="CerrarModal()"
+                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+            </div>
+            <div class="modal-body">
+
+                <input type="hidden" id="TareaID" value="0" />
+
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <label for="Descripcion" class="control-label">Descripción:</label>
+                        <input type="text" class="form-control" style="text-transform:uppercase" autocomplete="off"
+                            required id="Descripcion">
+                        <div id="Error-Descripcion"></div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="Fecha" class="control-label">Fecha:</label>
+                        <input type="date" id="Fecha" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control"
+                            style="text-transform:uppercase" autocomplete="off" required>
+
+                        <div id="Error-Fecha"></div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="Prioridad" class="control-label">Prioridad:</label>
+                        <select class="form-control" id="Prioridad">
+                            <option value="1">Baja</option>
+                            <option value="2">Media</option>
+                            <option value="3">Alta</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="CerrarModal()" class="btn btn-danger"
+                    data-dismiss="modal">Cerrar</button>
+                <button type="button" onclick="Guardar()" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/js/Tarea.js"></script>
+
+    <script type="text/javascript">
+        window.onload = CompletarTabla();
+    </script>
+
+
+
+    <script type="text/javascript">
+        function Imprimir() {
+
+
+            var doc = new jsPDF();
+
+            var totalPagesExp = "{total_pages_count_string}";
+            var pageContent = function (data) {
+                //HEADER
+                doc.setTextColor(0, 0, 0);
+                doc.setFontStyle('bold');
+                doc.setFontSize(15);
+                doc.text(17, 14, "Listado de Tareas");
+                //FIN HEADER
+
+                doc.setTextColor(40);
+
+                doc.setFontSize(16);
+
+                doc.setFontStyle('bold');
+
+                var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+                var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+
+                // FOOTER
+                var str = "Pagina " + data.pageCount;
+                // Total page number plugin only available in jspdf v1.0+
+                if (typeof doc.putTotalPages == 'function') {
+                    str = str + " de " + totalPagesExp;
+                }
+
+                doc.setFontSize(10);
+                doc.text(str, 165, pageHeight - 10);
+
+            };
+
+            var elem = document.getElementById("imprimir");
+            var res = doc.autoTableHtmlToJson(elem);
+
+            doc.autoTable(res.columns, res.data, {
+                startY: 21, addPageContent: pageContent,
+                margin: { top: 21 },
+                styles: {
+                    fillStyle: 'DF',
+                    overflow: 'linebreak',
+                    columnWidth: 110,
+                    lineWidth: 0.1,
+                    lineColor: [238, 238, 238]
+                },
+                headerStyles: {
+                    fillColor: [255, 255, 255],
+                },
+                columnStyles: {
+                    0: { columnWidth: 20 },//FECHA
+                    1: { columnWidth: 90 },
+                    2: { columnWidth: 20 },
+                    3: { columnWidth: 50 }
+                },
+                createdHeaderCell: function (cell, opts) {
+                    if (opts.column.index == 0 || opts.column.index == 2 || opts.column.index == 3) {
+                        cell.styles.halign = 'center';
+                    }
+                    cell.styles.fontSize = 8;
+                },
+                createdCell: function (cell, opts) {
+                    cell.styles.fontSize = 7;
+                    if (opts.column.index == 0 || opts.column.index == 2 || opts.column.index == 3) {
+                        cell.styles.halign = 'center';
+                    }
+                }
+            });
+
+
+            // ESTO SE LLAMA ANTES DE ABRIR EL PDF PARA QUE MUESTRE EN EL PDF EL NRO TOTAL DE PAGINAS. ACA CALCULA EL TOTAL DE PAGINAS.
+            if (typeof doc.putTotalPages === 'function') {
+                doc.putTotalPages(totalPagesExp);
+            }
+
+
+            // Output as Data URI.
+
+            var string = doc.output('datauristring');
+            var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
+
+            var x = window.open();
+            x.document.open();
+            x.document.write(iframe);
+            x.document.close();
+
+        }
+    </script>
+}
