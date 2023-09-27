@@ -1,32 +1,45 @@
 ﻿
 window.onload = CompletarGrafico();
+
+var myLineChart; // Declara una variable global para el gráfico
+
+$("#TipoEjercicioFisicoID, #MesActividadBuscar, #AnioActividadBuscar").change(function () {
+    myLineChart.destroy();
+    CompletarGrafico();
+});
+
 function CompletarGrafico() {
-    let mesBuscar = $("#MesEjercicioBuscar").val();
+    let tipoEjercicioFisicoID = $("#TipoEjercicioFisicoID").val();
+    let mesBuscar = $("#MesActividadBuscar").val();
+    let anioActividadBuscar = $("#AnioActividadBuscar").val();
     $.ajax({
         type: "POST",
-        url: '../../EjerciciosFisicos/BuscarEjerciciosFisicos',
-        data: {Mes : mesBuscar, TipoEjercicioFisicoID: 1},
-        success: function (listadoEjercicios) {
-            var totalidadMinutos = 0;
-            var diasConEjercicios = 0;
-            var diasSinEjercicios = 0;
+        url: '../../EjerciciosFisicos/BuscarEjerciciosFisicos2',
+        data: { Mes: mesBuscar, Anio: anioActividadBuscar, TipoEjercicioFisicoID: tipoEjercicioFisicoID },
+        success: function (vistaSumaEjercicioFisico) {
+
+
+
+            // var totalidadMinutos = 0;
+            // var diasConEjercicios = 0;
+            // var diasSinEjercicios = 0;
             var labels = [];
             var data = [];
-            $.each(listadoEjercicios, function (index, ejercicio) {
-                totalidadMinutos += ejercicio.cantidadMinutos;
+            $.each(vistaSumaEjercicioFisico.diasEjercicios, function (index, ejercicio) {
+                //totalidadMinutos += ejercicio.cantidadMinutos;
                 labels.push(ejercicio.mes + " " + ejercicio.dia);
                 data.push(ejercicio.cantidadMinutos);
-                if(ejercicio.cantidadMinutos == 0){
-                    diasSinEjercicios += 1;
-                }
-                else{
-                    diasConEjercicios += 1;
-                }
+                // if(ejercicio.cantidadMinutos == 0){
+                //     diasSinEjercicios += 1;
+                // }
+                // else{
+                //     diasConEjercicios += 1;
+                // }
             });
 
 
-            $("#texto-card-total-ejercicios").text("Totalidad de Actividad Física: "+ totalidadMinutos +" Minutos en " + diasConEjercicios +" Días");
-            $("#texto-card-sin-ejercicios").text("Sin Actividad Física: "+ diasSinEjercicios +" Días.");
+            $("#texto-card-total-ejercicios").text("Totalidad de Actividad Física: " + vistaSumaEjercicioFisico.totalidadMinutos + " Minutos en " + vistaSumaEjercicioFisico.totalidadDiasConEjercicio + " Días");
+            $("#texto-card-sin-ejercicios").text("Sin Actividad Física: " + vistaSumaEjercicioFisico.totalidadDiasSinEjercicio + " Días.");
 
             // Set new default font family and font color to mimic Bootstrap's default styling
             Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
@@ -34,7 +47,8 @@ function CompletarGrafico() {
 
             // Area Chart Example
             var ctx = document.getElementById("myAreaChart");
-            var myLineChart = new Chart(ctx, {
+            //myLineChart.destroy();
+            myLineChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
@@ -83,10 +97,29 @@ function CompletarGrafico() {
                 }
             });
 
-
+         
+            GraficoTorta();
         },
         error: function (data) {
         }
+    });
+}
+
+function GraficoTorta(){
+
+
+
+
+    var ctxPie = document.getElementById("myPieChart");
+    var myPieChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: ["Blue", "Red", "Yellow", "Green"],
+            datasets: [{
+                data: [12.21, 15.58, 11.25, 8.32],
+                backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+            }],
+        },
     });
 }
 
