@@ -15,13 +15,24 @@ namespace EzpeletaNetCore6.Models.GestionTarea
         [NotMapped]
         public string FechaStringInput {get { return Fecha.ToString("yyyy-MM-dd"); } }
 
+        public string? Titulo { get; set; }
         public string? Descripcion { get; set; }
+
+        public DateTime FechaVencimiento { get; set; }
+
+        [NotMapped]
+        public string FechaVencimientoString { get { return FechaVencimiento.ToString("dd/MM/yyyy"); } }
+
+        [NotMapped]
+        public string FechaVencimientoStringInput { get { return FechaVencimiento.ToString("yyyy-MM-dd"); } }
+
         public Prioridad Prioridad { get; set; }
 
         [NotMapped]
         public string PrioridadString {get { return Prioridad.ToString(); } }
         
         public bool Realizada { get; set; }
+        public int? AsignaturaID { get; set; }
         public string? UsuarioID { get; set; }
     }
 
