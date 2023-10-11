@@ -2,9 +2,11 @@
 window.onload = CompletarGrafico();
 
 var myLineChart; // Declara una variable global para el gráfico
+var myPieChart;
 
 $("#TipoEjercicioFisicoID, #MesActividadBuscar, #AnioActividadBuscar").change(function () {
     myLineChart.destroy();
+    myPieChart.destroy();
     CompletarGrafico();
 });
 
@@ -105,22 +107,65 @@ function CompletarGrafico() {
     });
 }
 
+function aleatorio(inferior, superior) {
+    let numPosibilidades = superior - inferior;
+    let aleatorio = Math.random() * numPosibilidades;
+    aleatorio = Math.floor(aleatorio);
+    return parseInt(inferior) + aleatorio;
+}
+
+function colorAleatorio() {
+    let hexadecimal = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
+    let color_aleatorio = "#";
+    for (i = 0; i < 6; i++) {
+      let posarray = aleatorio(0, hexadecimal.length)
+      color_aleatorio += hexadecimal[posarray]
+    }
+    return color_aleatorio
+}
+
 function GraficoTorta(){
 
+    let mesBuscar = $("#MesActividadBuscar").val();
+    let anioActividadBuscar = $("#AnioActividadBuscar").val();
+    $.ajax({
+        type: "POST",
+        url: '../../EjerciciosFisicos/GraficoTortaTipoActividades',
+        data: {Mes: mesBuscar, Anio: anioActividadBuscar},
+        success: function (vistaTipoEjercicioFisico) {
+           
+            var labels = [];
+            var data = [];
+            var fondo = [];
+            $.each(vistaTipoEjercicioFisico, function (index, tipoEjercicio) {
+
+                labels.push(tipoEjercicio.descripcion);
+                var color = colorAleatorio();
+                fondo.push(color);
+                data.push(tipoEjercicio.cantidadMinutos);
+
+            });
 
 
-
-    var ctxPie = document.getElementById("myPieChart");
-    var myPieChart = new Chart(ctxPie, {
-        type: 'pie',
-        data: {
-            labels: ["Blue", "Red", "Yellow", "Green"],
-            datasets: [{
-                data: [12.21, 15.58, 11.25, 8.32],
-                backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
-            }],
+            var ctxPie = document.getElementById("myPieChart");
+            myPieChart = new Chart(ctxPie, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: fondo,
+                    }],
+                },
+            });
         },
+        error: function (data) {
+        }
     });
+    
+   
+
+  
 }
 
 
