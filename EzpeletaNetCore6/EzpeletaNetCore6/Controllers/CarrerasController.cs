@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using TPAPP1.Data;
-using TPAPP1.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using EzpeletaNetCore6.Data;
+using EzpeletaNetCore6.Models.GestionAlumno;
 
-namespace TPAPP1.Controllers;
+namespace EzpeletaNetCore6.Controllers;
 
 
 public class CarrerasController : Controller 
@@ -32,7 +32,7 @@ public class CarrerasController : Controller
         var carreras = _contexto.Carreras.ToList();
 
        if (CarreraID  > 0){
-        carreras = carreras.Where(c => c.CarreraID == CarreraID).OrderBy(c => c.NombreCarrera).ToList();
+        carreras = carreras.Where(c => c.CarreraID == CarreraID).OrderBy(c => c.Nombre).ToList();
        }
 
        return Json(carreras);
@@ -40,26 +40,22 @@ public class CarrerasController : Controller
     }
 
 
-    public JsonResult GuardarCarrera(int CarreraID, string NombreCarrera, string Duracion){
+    public JsonResult GuardarCarrera(int CarreraID, string Nombre, string Duracion){
         bool resultado = false;
 
 
-         if (!string.IsNullOrEmpty(NombreCarrera))
+         if (!string.IsNullOrEmpty(Nombre))
          {
         
             if(CarreraID == 0){
                 
-                var carreraNuev = _contexto.Carreras.Where(c => c.NombreCarrera == NombreCarrera).FirstOrDefault();
+                var carreraNuev = _contexto.Carreras.Where(c => c.Nombre == Nombre).FirstOrDefault();
                 if (carreraNuev == null){
                    
                     var carreraGuardar = new Carrera {
-                        NombreCarrera = NombreCarrera,
-                        DuracionCarrera = Duracion
-                    };
-                    
-                    carreraGuardar.NombreCarrera = carreraGuardar.NombreCarrera.ToUpper();
-                    carreraGuardar.DuracionCarrera = carreraGuardar.DuracionCarrera.ToUpper();
-
+                        Nombre = Nombre.ToUpper(),
+                        DuracionCarrera = Duracion.ToUpper()
+                    };                
                     _contexto.Add(carreraGuardar);
                     _contexto.SaveChanges();
                     resultado = true;
@@ -68,17 +64,13 @@ public class CarrerasController : Controller
          
             else{
                
-                var carreraOriginal = _contexto.Carreras.Where(c => c.NombreCarrera == NombreCarrera && c.CarreraID != CarreraID).FirstOrDefault();
+                var carreraOriginal = _contexto.Carreras.Where(c => c.Nombre == Nombre && c.CarreraID != CarreraID).FirstOrDefault();
                 if(carreraOriginal == null){
 
                     var carreraEditar = _contexto.Carreras.Find(CarreraID);
                     if (carreraEditar != null){
-                        carreraEditar.NombreCarrera = NombreCarrera;
-                        carreraEditar.DuracionCarrera = Duracion;
-
-                        carreraEditar.NombreCarrera = carreraEditar.NombreCarrera.ToUpper();
-                        carreraEditar.DuracionCarrera = carreraEditar.DuracionCarrera.ToUpper();
-                    
+                        carreraEditar.Nombre = Nombre.ToUpper();
+                        carreraEditar.DuracionCarrera = Duracion.ToUpper();                    
                         _contexto.SaveChanges();
                         resultado = true;
                     }
@@ -90,7 +82,6 @@ public class CarrerasController : Controller
          }
 
         return Json(resultado);
-
 
     }
 
