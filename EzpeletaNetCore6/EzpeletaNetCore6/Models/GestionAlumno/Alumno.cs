@@ -35,26 +35,26 @@ namespace EzpeletaNetCore6.Models.GestionAlumno{
     }
 
 
-    public class VistaAlumno{
-        public int AlumnoID { get; set; }
-        
+  public class VistaAlumno{
+      public int AlumnoID { get; set; }
         public string? Nombre { get; set; }
 
         public DateTime FechaNacimiento {get; set; }
 
-        public string? FechaNacimientoString { get; set;}  
+        public string FechaNacimientoString  {get; set; }
 
-        public string? FechaNacimientoStringInput {get; set;}
+        public string FechaNacimientoStringInput  {get; set; }
 
-        public int CarreraID {get; set;} 
-
-        public string? NombreCarrera {get; set;} 
+        public int CarreraID {get; set; }
+        public string NombreCarrera {get;set;}
+        
+        //Se agrega nuevo 
 
         public string? Direccion {get; set;} 
 
         public int DNI {get; set;} 
 
         public string? Email {get; set;} 
-    }
+  }
 
 }
