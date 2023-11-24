@@ -4,21 +4,21 @@ function CompletarTabla() {
     VaciarFormulario();
     $.ajax({
         type: "POST",
-        url: '../../Alumnos/BuscarAlumnos',
+        url: '../../Profesores/BuscarProfesores',
         data: {},
-        success: function (listadoAlumnos) {
-            $("#tbody-alumnos").empty();
-            $.each(listadoAlumnos, function (index, alumno) {
+        success: function (listadoProfesores) {
+            $("#tbody-profesores").empty();
+            $.each(listadoProfesores, function (index, profesor) {
 
                 let claseEliminado = '';
-                let botones = '<button type="button" onclick="BuscarAlumno(' + alumno.alumnoID + ')" class="btn btn-primary btn-sm" style="margin-right:5px">Editar</button>' +
-                    '<button type="button" onclick="EliminarAlumno(' + alumno.alumnoID + ')" class="btn btn-danger btn-sm">Desactivar</button>';
+                let botones = '<button type="button" onclick="BuscarAlumno(' + profesor.profesorID + ')" class="btn btn-primary btn-sm" style="margin-right:5px">Editar</button>' +
+                    '<button type="button" onclick="EliminarAlumno(' + profesor.profesorID + ')" class="btn btn-danger btn-sm">Desactivar</button>';
 
-                $("#tbody-alumnos").append('<tr class=' + claseEliminado + '>' +
-                    '<td>' + alumno.nombre + '</td>' +
-                    '<td>' + alumno.nombreCarrera + '</td>' +
-                    '<td>' + alumno.dni + '</td>' +
-                    '<td>' + alumno.email + '</td>' +
+                $("#tbody-profesores").append('<tr class=' + claseEliminado + '>' +
+                    '<td>' + profesor.nombre + '</td>' +
+                    '<td>' + profesor.fechaNacimientoString + '</td>' +
+                    '<td>' + profesor.dni + '</td>' +
+                    '<td>' + profesor.email + '</td>' +
                     '<td class="text-center">' +
                     botones +
                     '</td>' +
@@ -31,8 +31,8 @@ function CompletarTabla() {
 }
 
 function AbrirModal() {
-    $("#Titulo-Modal").text("Nuevo Alumno");
-    $("#AlumnoID").val(0);
+    $("#Titulo-Modal").text("Nuevo Profesor");
+    $("#ProfesorID").val(0);
     $("#CarreraID").val(0);
     $("#ModalAltaModificacion").modal("show");
 }
@@ -45,18 +45,17 @@ function CerrarModal() {
 function GuardarRegistro() {
     $("#Error-Nombre").text("");
 
-    let url = "../../Alumnos/GuardarAlumno";
+    let url = "../../Profesores/GuardarProfesor";
    
-    let carreraID = $("#CarreraID").val();
-    let alumnoNombre = $("#AlumnoNombre").val().trim();
+    let profesorID = $("#ProfesorID").val();
+    let profesorNombre = $("#ProfesorNombre").val().trim();
     let nacimiento = $("#Nacimiento").val();
     let direccion = $("#Direccion").val().trim();
     let email = $("#Email").val().trim();
     let dNI = $("#DNI").val();
-    let alumnoID = $("#AlumnoID").val();
 
     let registrar = true;
-    if (alumnoNombre == ""){
+    if (profesorNombre == ""){
         $("#Error-Nombre").text("Debe ingresar un Nombre.");
         registrar = false;
     }
@@ -69,7 +68,7 @@ function GuardarRegistro() {
         $.ajax({
             type: "POST",
             url: url,
-            data: { AlumnoID:alumnoID, Nombre: alumnoNombre, FechaNacimiento: nacimiento,CarreraID: carreraID,
+            data: { ProfesorID:profesorID, Nombre: profesorNombre, FechaNacimiento: nacimiento,
                 Email: email, DNI: dNI, Direccion: direccion},
             success: function (resultado) {
                 if (resultado) {
@@ -77,7 +76,7 @@ function GuardarRegistro() {
                     CompletarTabla();
                 }
                 else {
-                    $("#Error-Nombre").text("El alumno ingresado ya existe.");
+                    $("#Error-Nombre").text("El profesor ingresado ya existe.");
                 }
             },
             error: function (r) {

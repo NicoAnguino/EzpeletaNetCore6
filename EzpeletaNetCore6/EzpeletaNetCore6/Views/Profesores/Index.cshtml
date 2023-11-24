@@ -1,0 +1,185 @@
+﻿@model IEnumerable<EzpeletaNetCore6.Models.GestionAlumno.Carrera>
+
+@{
+    ViewData["Title"] = "Listado de Profesores";
+}
+
+<h1>Listado de Profesores</h1>
+
+<div class="row">
+    <p class="col-6">
+        <button class="btn btn-primary btn-sm" onclick="AbrirModal()">Nuevo Profesor</button>
+    </p>
+
+    <p class="col-6 text-right">
+        <button class="btn btn-success btn-sm" onclick="Imprimir()">Imprimir</button>
+    </p>
+</div>
+
+<div class="modal fade" id="ModalAltaModificacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="Titulo-Modal"></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="CerrarModal()"
+                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+            </div>
+        
+                <div class="modal-body">
+                    <input type="hidden" id="ProfesorID" value="0" />
+                    <div class="form-group">
+                        <label for="ProfesorNombre" class="control-label">Nombre Completo:</label>
+                        <input type="text" class="form-control" style="text-transform:uppercase" autocomplete="off"
+                            required id="ProfesorNombre">
+                        <p id="Error-Nombre"></p>
+                    </div>
+                      <div class="form-group">
+                        <label for="DNI" class="control-label">DNI:</label>
+                        <input type="number" class="form-control" autocomplete="off"
+                            required id="DNI">
+                        <p id="Error-DNI"></p>
+                    </div>
+                       <div class="form-group">
+                        <label for="Direccion" class="control-label">Dirección:</label>
+                        <input type="text" class="form-control" style="text-transform:uppercase" autocomplete="off"
+                            required id="Direccion">                       
+                    </div>
+                    <div class="form-group">
+                        <label for="Nacimiento" class="control-label">Nacimiento:</label>
+                        <input type="date" class="form-control" autocomplete="off"
+                            required id="Nacimiento">
+                        <p id="Error-Nombre"></p>
+                    </div>
+                   
+                      <div class="form-group">
+                        <label for="Email" class="control-label">Email:</label>
+                        <input type="text" class="form-control" style="text-transform:lowercase" autocomplete="off"
+                            required id="Email">
+                        <p id="Error-Email"></p>
+                    </div>
+                
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="CerrarModal()" class="btn btn-danger"
+                        data-dismiss="modal">Cerrar</button>
+                    <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+                </div>
+       
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        DataTable Example
+    </div>
+    <div class="card-body">
+
+
+        <table id="tabla-imprimir" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Nombre Completo
+                    </th>
+                    <th>
+                        Carrera
+                    </th>
+                     <th>
+                        DNI
+                    </th>
+                     <th>
+                        Email
+                    </th>
+                    <th class="text-center" style="width:160px">Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-profesores">
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    <script src="~/js/Profesor-1.0.0.js"></script>
+    <script>
+        window.onload = CompletarTabla();
+
+
+        function Imprimir() {
+            var doc = new jsPDF();
+            //var doc = new jsPDF('l', 'mm', [297, 210]);
+
+            var totalPagesExp = "{total_pages_count_string}";
+            var pageContent = function (data) {
+
+                var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+                var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+
+                // FOOTER
+                var str = "Pagina " + data.pageCount;
+                // Total page number plugin only available in jspdf v1.0+
+                if (typeof doc.putTotalPages == 'function') {
+                    str = str + " de " + totalPagesExp;
+                }
+
+                doc.setLineWidth(8);
+                doc.setDrawColor(238, 238, 238);
+                doc.line(14, pageHeight - 11, 196, pageHeight - 11);
+
+                doc.setFontSize(10);
+
+
+                doc.setFontStyle('bold');
+
+                doc.text(str, 17, pageHeight - 10);
+
+            };
+
+
+            var elem = document.getElementById("tabla-imprimir");
+            var res = doc.autoTableHtmlToJson(elem);
+            doc.autoTable(res.columns, res.data,
+                {
+                    addPageContent: pageContent,
+                    theme: 'grid',
+                    //styles: { fillColor: [255, 0, 0] }, //COLOR ENCABEZADO
+                    columnStyles: {
+                        0: { halign: 'center', 
+                             cellWidth: 100, 
+                             fontSize: 7,
+                             //fillColor: [0, 255, 0] 
+                           },
+                        1: {  fontSize: 7, overflow: 'hidden' }
+                    }, // Celdas de la primera columna centradas y verdes
+                    margin: { top: 10 },
+                }
+            );
+
+            // ESTO SE LLAMA ANTES DE ABRIR EL PDF PARA QUE MUESTRE EN EL PDF EL NRO TOTAL DE PAGINAS. ACA CALCULA EL TOTAL DE PAGINAS.
+            if (typeof doc.putTotalPages === 'function') {
+                doc.putTotalPages(totalPagesExp);
+            }
+
+            //doc.save('InformeSistema.pdf')
+
+            var string = doc.output('datauristring');
+            var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
+
+            var x = window.open();
+            x.document.open();
+            x.document.write(iframe);
+            x.document.close();
+        }
+    </script>
+}
