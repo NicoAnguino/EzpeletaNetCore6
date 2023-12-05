@@ -32,14 +32,29 @@ public class ProfesoresController : Controller
 
     public JsonResult BuscarProfesores(int ProfesorID = 0){
                
-               
+               List<VistaProfesor> profesoresMostrar = new List<VistaProfesor>();
         var profesores = _contexto.Profesores.OrderBy(c => c.Nombre).ToList();
 
        if (ProfesorID  > 0){
         profesores = profesores.Where(c => c.ProfesorID == ProfesorID).ToList();
        }
 
-       return Json(profesores);
+       foreach (var profesor in profesores)
+       {
+        var profesorMostrar = new VistaProfesor{
+            ProfesorID = profesor.ProfesorID,
+            Nombre = profesor.Nombre,
+            FechaNacimiento = profesor.FechaNacimiento,
+            FechaNacimientoString = profesor.FechaNacimientoString,
+            FechaNacimientoStringInput = profesor.FechaNacimientoStringInput,
+            Direccion = profesor.Direccion,
+            Email = profesor.Email,
+            DNI = profesor.DNI
+        };
+        profesoresMostrar.Add(profesorMostrar);
+       }
+
+       return Json(profesoresMostrar);
 
     }
 

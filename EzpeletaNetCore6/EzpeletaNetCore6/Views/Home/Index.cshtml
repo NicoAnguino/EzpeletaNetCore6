@@ -7,6 +7,36 @@
     <li class="breadcrumb-item active">PANEL ASP.NET Core 6.</li>
 </ol>
 <div class="row">
+
+ <div class="col-xl-4 col-md-4 mb-2">
+        <label class="control-label">Tipo de Actividad Física:</label>
+        @Html.DropDownList("TipoEjercicioFisicoID", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+
+    <div class="col-xl-4 col-md-4 mb-2">
+        <label class="control-label">Mes:</label>
+        <select class="form-control" id="MesActividadBuscar">
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9" selected>Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+        </select>
+    </div>
+    <div class="col-xl-4 col-md-4 mb-2">
+        <label class="control-label">Año:</label>
+        <select class="form-control" id="AnioActividadBuscar">
+            <option value="2023">2023</option>
+        </select>
+    </div>
+
     <div class="col-xl-6 col-md-6">
         <div class="card bg-success text-white mb-2">
             <div class="card-body" id="texto-card-total-ejercicios"></div>
@@ -44,34 +74,7 @@
         </div>
     </div>
 
-    <div class="col-xl-4 col-md-4 mb-2">
-        <label class="control-label">Tipo de Actividad Física:</label>
-        @Html.DropDownList("TipoEjercicioFisicoID", null, htmlAttributes: new { @class = "form-control" })
-    </div>
-
-    <div class="col-xl-4 col-md-4 mb-2">
-        <label class="control-label">Mes:</label>
-        <select class="form-control" id="MesActividadBuscar">
-            <option value="1">Enero</option>
-            <option value="2">Febrero</option>
-            <option value="3">Marzo</option>
-            <option value="4">Abril</option>
-            <option value="5">Mayo</option>
-            <option value="6">Junio</option>
-            <option value="7">Julio</option>
-            <option value="8">Agosto</option>
-            <option value="9" selected>Septiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>
-        </select>
-    </div>
-    <div class="col-xl-4 col-md-4 mb-2">
-        <label class="control-label">Año:</label>
-        <select class="form-control" id="AnioActividadBuscar">
-            <option value="2023">2023</option>
-        </select>
-    </div>
+   
 </div>
 <div class="row">
     <div class="col-xl-6">

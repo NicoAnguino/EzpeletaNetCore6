@@ -27,4 +27,15 @@ namespace EzpeletaNetCore6.Models.GestionAlumno{
 
     }
 
+    public class VistaProfesor{
+         public int ProfesorID { get; set; }
+        public string? Nombre { get; set; }
+        public DateTime FechaNacimiento {get; set; }
+        public string FechaNacimientoString {get; set; }
+        public string FechaNacimientoStringInput {get; set; }
+        public int DNI {get; set; }
+        public string? Direccion {get; set; }
+        public string? Email {get; set; }
+    }
+
 }
