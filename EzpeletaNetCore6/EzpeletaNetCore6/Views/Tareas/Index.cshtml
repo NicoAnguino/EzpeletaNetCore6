@@ -4,12 +4,45 @@
     ViewData["Title"] = "Listado de Tareas";
 }
 
-<h2>Listado de Tareas</h2>
 
+
+
+  <link href="css/cancha-tenis-1.0.0.css" rel="stylesheet" />
+
+<div id="escenario">
+  <input type="checkbox" id="conmutador-input">
+  <label for="conmutador-input" id="conmutador-label" title="Click to change the view"></label>
+  <div id="contenedor-responsive"  title="Responsive behavior, resize your browser ;)">
+      <div class="contenedor-campo" onclick="createMessageUnder(this)">
+          <div id="esquina-superior-izquierda"></div>
+          <div id="esquina-superior-derecha"></div>
+          <div id="esquina-inferior-izquierda"></div>
+          <div id="esquina-inferior-derecha"></div>
+          <div id="linea-vertical-medio-campo-arriba"></div>
+          <div id="linea-vertical-medio-campo-abajo"></div>
+          <div id="zona-central">
+              <div id="area-grande-izquierda"></div>
+              <div id="area-pequena-izquierda"></div>
+              <div id="medio-campo-izquierda"></div>
+              <div id="semicirculo-izquierda"></div>
+              <div id="penalty-izquierda"></div>
+              <div id="linea-vertical-medio-campo-medio"></div>
+              <div id="circulo-central"></div>
+              <div id="area-grande-derecha"></div>
+              <div id="area-pequena-derecha"></div>
+              <div id="medio-campo-derecha"></div>
+              <div id="semicirculo-derecha"></div>
+              <div id="penalty-derecha"></div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<h2 class="text-white">Listado de Tareas</h2>
 
 <div class="row">
     <p class="col-6">
-        <button class="btn btn-primary btn-sm" onclick="AbrirModal()">Nuevo Tarea</button>
+        <button class="btn btn-primary btn-sm" onclick="AbrirModal()">Nueva Tarea</button>
     </p>
 
     <p class="col-6 text-right">
@@ -128,6 +161,34 @@
     </script>
 
 
+<script>
+    // obteniendo las coordenadas en el documento del elemento
+function getCoords(elem) {
+  let box = elem.getBoundingClientRect();
+
+  return {
+    top: box.top + window.pageYOffset,
+    right: box.right + window.pageXOffset,
+    bottom: box.bottom + window.pageYOffset,
+    left: box.left + window.pageXOffset
+  };
+}
+
+function createMessageUnder(elem) {
+
+
+  let coords = getCoords(elem);
+
+
+
+console.log("left:" + coords.left + "px");
+console.log("bottom: " + coords.bottom + "px");
+  //message.innerHTML = html;
+
+ 
+}
+
+</script>
 
     <script type="text/javascript">
         function Imprimir() {
