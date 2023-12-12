@@ -4,41 +4,39 @@
     ViewData["Title"] = "Listado de Tareas";
 }
 
-
-
-
   <link href="css/cancha-tenis-1.0.0.css" rel="stylesheet" />
 
-<div id="escenario">
-  <input type="checkbox" id="conmutador-input">
-  <label for="conmutador-input" id="conmutador-label" title="Click to change the view"></label>
-  <div id="contenedor-responsive"  title="Responsive behavior, resize your browser ;)">
-      <div class="contenedor-campo" onclick="createMessageUnder(this)">
-          <div id="esquina-superior-izquierda"></div>
-          <div id="esquina-superior-derecha"></div>
-          <div id="esquina-inferior-izquierda"></div>
-          <div id="esquina-inferior-derecha"></div>
-          <div id="linea-vertical-medio-campo-arriba"></div>
-          <div id="linea-vertical-medio-campo-abajo"></div>
-          <div id="zona-central">
-              <div id="area-grande-izquierda"></div>
-              <div id="area-pequena-izquierda"></div>
-              <div id="medio-campo-izquierda"></div>
-              <div id="semicirculo-izquierda"></div>
-              <div id="penalty-izquierda"></div>
-              <div id="linea-vertical-medio-campo-medio"></div>
-              <div id="circulo-central"></div>
-              <div id="area-grande-derecha"></div>
-              <div id="area-pequena-derecha"></div>
-              <div id="medio-campo-derecha"></div>
-              <div id="semicirculo-derecha"></div>
-              <div id="penalty-derecha"></div>
-          </div>
-      </div>
-  </div>
+<div class="grass" id="contenedor-responsive" onmousemove="getCursorPosition(event)" >
+    
+    <div class="court-container"  >
+    
+        <div class="court-outline"  >
+            <div class="court-aspect" >
+                <div class="court-boundaries" id="contenedor-campo" >
+                    <div class="singles-lines"></div>
+                    <div class="service-lines"></div>
+                    <div class="center-line"></div>
+                    <div class="center-line end left"></div>
+                    <div class="center-line end right"></div>
+                    <div class="net">
+                        <div class="post top"></div>
+                        <div class="post bottom"></div>
+                    </div>
+                    <div class="net-shadow"></div>
+                      <div id="info"></div>
+                    
+                
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    
+    
 </div>
 
-<h2 class="text-white">Listado de Tareas</h2>
+
+@* <h2 class="text-white">Listado de Tareas</h2>
 
 <div class="row">
     <p class="col-6">
@@ -79,7 +77,7 @@
             </tbody>
         </table>
     </div>
-</div>
+</div> *@
 
 
 <table id="imprimir" style="display: none;">
@@ -157,36 +155,30 @@
     <script src="~/js/Tarea.js"></script>
 
     <script type="text/javascript">
-        window.onload = CompletarTabla();
+       // window.onload = CompletarTabla();
     </script>
 
 
 <script>
-    // obteniendo las coordenadas en el documento del elemento
-function getCoords(elem) {
-  let box = elem.getBoundingClientRect();
+    function getCursorPosition(event) { 
+  var div = document.getElementById('contenedor-responsive'); 
+  var rect = div.getBoundingClientRect(); 
+  var x = event.clientX - rect.left; 
+  var y = event.clientY - rect.top; 
+    let _position = `X: ${x}<br>Y: ${y}`;
+    //$("#contenedor-campo").append(`<div class="ball" style="top: ${y-45}px; left: ${x-45}px"></div>`);
 
-  return {
-    top: box.top + window.pageYOffset,
-    right: box.right + window.pageXOffset,
-    bottom: box.bottom + window.pageYOffset,
-    left: box.left + window.pageXOffset
-  };
-}
+    //y -= 45;
+    //x -= 45;
 
-function createMessageUnder(elem) {
+     const infoElement = document.getElementById('info');
+    infoElement.innerHTML = _position;
+    infoElement.style.top = y + "px";
+    infoElement.style.left = (x + 20) + "px";
 
-
-  let coords = getCoords(elem);
-
-
-
-console.log("left:" + coords.left + "px");
-console.log("bottom: " + coords.bottom + "px");
-  //message.innerHTML = html;
-
- 
-}
+    //$("#contenedor-campo").append(`<div class="ball" style="top: ${y}px; left: ${x}px"></div>`);
+  console.log('Cursor position inside the div: x = ' + x + ', y = ' + y); 
+} 
 
 </script>
 

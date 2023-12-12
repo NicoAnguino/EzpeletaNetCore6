@@ -1,0 +1,81 @@
+﻿
+
+@{
+    ViewData["Title"] = "s";
+}
+
+
+
+
+  <link href="css/cancha-tenis-1.0.0.css" rel="stylesheet" />
+
+@* <div id="escenario">
+  <input type="checkbox" id="conmutador-input">
+  <label for="conmutador-input" id="conmutador-label" title="Click to change the view"></label>
+  <div id="contenedor-responsive" onclick="getCursorPosition(event)" title="Responsive behavior, resize your browser ;)">
+      <div class="contenedor-campo" id="contenedor-campo">
+        
+        
+
+         
+
+        
+
+      </div>
+  </div>
+</div> *@
+
+
+<div class="grass">
+    
+    <div class="court-container">
+    
+        <div class="court-outline">
+            <div class="court-aspect">
+                <div class="court-boundaries">
+                    <div class="singles-lines"></div>
+                    <div class="service-lines"></div>
+                    <div class="center-line"></div>
+                    <div class="center-line end left"></div>
+                    <div class="center-line end right"></div>
+                    <div class="net">
+                        <div class="post top"></div>
+                        <div class="post bottom"></div>
+                    </div>
+                    <div class="net-shadow"></div>
+                    <div class="ball"></div>
+                    
+                    <div class="player left"></div>
+                    <div class="player right"></div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    
+    
+</div>
+
+
+
+
+@section Scripts {
+
+
+
+<script>
+    function getCursorPosition(event) { 
+  var div = document.getElementById('contenedor-responsive'); 
+  var rect = div.getBoundingClientRect(); 
+  var x = event.clientX - rect.left; 
+  var y = event.clientY - rect.top; 
+ 
+    $("#contenedor-campo").append(`<div style="height: 15px; width:15px; background-color: #569b4a; border: 0.5px solid white; border-radius:10px; position:absolute; top: ${y-10}px; left: ${x-10}px"></div>`);
+    
+  console.log('Cursor position inside the div: x = ' + x + ', y = ' + y); 
+} 
+
+</script>
+
+   
+}

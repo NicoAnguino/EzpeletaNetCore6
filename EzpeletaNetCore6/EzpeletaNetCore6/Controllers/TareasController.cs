@@ -25,6 +25,11 @@ namespace EzpeletaNetCore6.Controllers
             return View();
         }
 
+           public IActionResult Tenis()
+        {
+            return View();
+        }
+
         public JsonResult BuscarTareas(int TareaID)
         {
             var usuarioIDActual = _userManager.GetUserId(HttpContext.User);
