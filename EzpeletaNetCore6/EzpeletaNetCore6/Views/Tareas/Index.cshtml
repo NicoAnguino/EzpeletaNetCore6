@@ -6,7 +6,7 @@
 
   <link href="css/cancha-tenis-1.0.0.css" rel="stylesheet" />
 
-<div class="grass" id="contenedor-responsive" onmousemove="getCursorPosition(event)" >
+<div class="grass" id="contenedor-responsive" onclick="insertarPelota(event)" onmousemove="getCursorPosition(event)" >
     
     <div class="court-container"  >
     
@@ -165,20 +165,31 @@
   var rect = div.getBoundingClientRect(); 
   var x = event.clientX - rect.left; 
   var y = event.clientY - rect.top; 
-    let _position = `X: ${x}<br>Y: ${y}`;
+    let _position = `X: ${x}<br>Y: ${y}<br>Rect.left: ${rect.left}<br>Rect.top: ${rect.top} <br> Resolución:   ${screen.width} x ${screen.height}px`;
     //$("#contenedor-campo").append(`<div class="ball" style="top: ${y-45}px; left: ${x-45}px"></div>`);
 
-    //y -= 45;
-    //x -= 45;
+    y -= 45;
+    x -= 45;
 
      const infoElement = document.getElementById('info');
     infoElement.innerHTML = _position;
     infoElement.style.top = y + "px";
     infoElement.style.left = (x + 20) + "px";
 
-    //$("#contenedor-campo").append(`<div class="ball" style="top: ${y}px; left: ${x}px"></div>`);
-  console.log('Cursor position inside the div: x = ' + x + ', y = ' + y); 
+    //
+  
 } 
+
+function insertarPelota(event){
+      var div = document.getElementById('contenedor-responsive'); 
+  var rect = div.getBoundingClientRect(); 
+  var x = event.clientX - rect.left; 
+  var y = event.clientY - rect.top; 
+y -= 45;
+    x -= 45;
+$("#contenedor-campo").append(`<div class="ball" style="top: ${y}px; left: ${x}px"></div>`);
+ console.log('Cursor position inside the div: x = ' + x + ', y = ' + y);
+}
 
 </script>
 
