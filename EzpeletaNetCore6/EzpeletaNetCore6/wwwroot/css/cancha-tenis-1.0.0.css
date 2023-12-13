@@ -178,8 +178,8 @@
 
 
 	  #contenedor-responsive {
-      width: 1500px;
-      height: 800px; 
+      /* width: 1500px;
+      height: 800px;  */
 	
       position: relative;
 	  background: -webkit-gradient(

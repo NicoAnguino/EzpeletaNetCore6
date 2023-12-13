@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using EzpeletaNetCore6.Models.Tenis;
+using System.Globalization;
 
 namespace EzpeletaNetCore6.Controllers;
 
@@ -30,13 +31,18 @@ public class AlumnosController : Controller
         return View();
     }
 
-    public JsonResult GuardarPique(decimal Ejex, decimal Ejey, decimal Ancho, decimal Alto){
+    public JsonResult GuardarPique(decimal Ejex, decimal Ejey, string Ancho, string Alto){
+
+        Thread.CurrentThread.CurrentCulture = new CultureInfo("es-AR");
+
+        Ancho = Ancho.Replace(".", ",");
+        Alto = Alto.Replace(".", ",");
 
         var piqueGuardar = new Pique{
             EjeX = Ejex,
             EjeY = Ejey,
-            WidthDevice = Ancho,
-            HeightDevice = Alto
+            WidthDevice = Convert.ToDecimal(Ancho),
+            HeightDevice = Convert.ToDecimal(Alto),
         };
         _contexto.Add(piqueGuardar);
         _contexto.SaveChanges();

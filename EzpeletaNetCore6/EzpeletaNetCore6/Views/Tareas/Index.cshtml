@@ -209,8 +209,17 @@ Estado
             y -= 8;
             x -= 8;
 
-            var ancho = window.innerWidth;
-            var alto = window.innerHeight;
+            //var ancho = window.innerWidth;
+            //var alto = window.innerHeight;
+
+            var ancho = 0;
+            if (window.innerWidth < 991) {
+                ancho = window.innerWidth - 40;
+            }
+            else {
+                ancho = window.innerWidth - 270;
+            }
+            alto = 46.15 * ancho / 100;
 
             $.ajax({
                 type: "POST",
@@ -234,7 +243,25 @@ Estado
         }
 
         window.onload = BuscarPiques();
+
         function BuscarPiques() {
+            //AL BUSCAR LOS PIQUES DEBEMOS TENER EN CUENTA QUE RESOLUCION USA LA PANTALLA ACTUAL
+            //CON LA RESOLUCION QUE SE USO EN EL MOMENTO DE GUARDAR LOS PIQUES
+            var ancho = 0;
+            if (window.innerWidth < 991) {
+                ancho = window.innerWidth - 40;
+            }
+            else {
+                ancho = window.innerWidth - 270;
+            }
+            alto = 46.15 * ancho / 100;
+
+            var cancha = document.getElementById('contenedor-responsive');
+            cancha.style.width = ancho + 'px';
+            cancha.style.height = alto + 'px';
+
+           // alert(ancho + "X" + alto);
+
             $.ajax({
                 type: "POST",
                 url: '../../Alumnos/BuscarPiques',
@@ -242,7 +269,22 @@ Estado
                 success: function (piques) {
 
                     $.each(piques, function (index, pique) {
-                        $("#contenedor-campo").append(`<div class="ball" style="top: ${pique.ejeY}px; left: ${pique.ejeX}px"></div>`);
+
+                        //VER EL ANCHO ORIGINAL
+                        //VER EL ANCHO ACTUAL
+                        let ejeY = pique.ejeY;
+                        if(pique.ejeY > 0){
+                            ejeY = alto * pique.ejeY / pique.heightDevice;
+                        }
+                        
+                        //VER EL ALTO ORIGINAL
+                        //VER EL ALTO ACTUAL
+                        let ejeX = pique.ejeX;
+                        if(pique.ejeX > 0){
+                            ejeX = ancho * pique.ejeX / pique.widthDevice;
+                        }
+
+                        $("#contenedor-campo").append(`<div class="ball" style="top: ${ejeY}px; left: ${ejeX}px"></div>`);
                     });
 
                 },
