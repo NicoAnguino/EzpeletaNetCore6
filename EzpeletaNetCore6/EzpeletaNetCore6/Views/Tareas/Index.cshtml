@@ -6,38 +6,19 @@
 
 <link href="css/cancha-tenis-1.0.0.css" rel="stylesheet" />
 
-@* <div class="grass" id="contenedor-responsive" onclick="insertarPelota(event)" onmousemove="getCursorPosition(event)"
->
-
-<div class="court-container" >
-
-<div class="court-outline" >
-<div class="court-aspect" >
-<div class="court-boundaries" id="contenedor-campo" >
-<div class="singles-lines"></div>
-<div class="service-lines"></div>
-<div class="center-line"></div>
-<div class="center-line end left"></div>
-<div class="center-line end right"></div>
-<div class="net">
-<div class="post top"></div>
-<div class="post bottom"></div>
-</div>
-<div class="net-shadow"></div>
-<div id="info"></div>
-
-
-</div>
-</div>
-</div>
-
-</div>
-
-
-</div> *@
-
 <div id="contenedor-responsive" onclick="insertarPelota(event)" onmousemove="getCursorPosition(event)">
-    <div id="contenedor-campo"></div>
+    <div id="contenedor-campo">
+        <div class="singles-lines"></div>
+        <div class="service-lines"></div>
+        <div class="center-line"></div>
+        <div class="center-line end left"></div>
+        <div class="center-line end right"></div>
+        <div class="net">
+            <div class="post top"></div>
+            <div class="post bottom"></div>
+        </div>
+        <div class="net-shadow"></div>
+    </div>
 </div>
 
 
@@ -206,8 +187,8 @@ Estado
             //y -= 45;
             //  x -= 45;
 
-            y -= 8;
-            x -= 8;
+            y -= 5;
+            x -= 5;
 
             //var ancho = window.innerWidth;
             //var alto = window.innerHeight;
@@ -260,7 +241,7 @@ Estado
             cancha.style.width = ancho + 'px';
             cancha.style.height = alto + 'px';
 
-           // alert(ancho + "X" + alto);
+            // alert(ancho + "X" + alto);
 
             $.ajax({
                 type: "POST",
@@ -273,14 +254,14 @@ Estado
                         //VER EL ANCHO ORIGINAL
                         //VER EL ANCHO ACTUAL
                         let ejeY = pique.ejeY;
-                        if(pique.ejeY > 0){
+                        if (pique.ejeY > 0) {
                             ejeY = alto * pique.ejeY / pique.heightDevice;
                         }
-                        
+
                         //VER EL ALTO ORIGINAL
                         //VER EL ALTO ACTUAL
                         let ejeX = pique.ejeX;
-                        if(pique.ejeX > 0){
+                        if (pique.ejeX > 0) {
                             ejeX = ancho * pique.ejeX / pique.widthDevice;
                         }
 
