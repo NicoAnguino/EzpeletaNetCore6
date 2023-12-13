@@ -149,21 +149,12 @@
 		bottom: -2.5%;
 	}
 
-	.player {
-		background: #d3882d;
-		width: 1.1vw;
-		height: 12%;
-		position: absolute;
-		-webkit-animation-duration: 4s;
-		        animation-duration: 4s;
-		-webkit-animation-iteration-count: infinite;
-		        animation-iteration-count: infinite;
-	}
+
 
 	.ball {
 		position: absolute;
-		width: 1.5vw;
-		height: 1.5vw;
+		width: 17px;
+		height: 17px;
 		background: #fff;
 		border-radius: 100%;
 	
@@ -184,6 +175,40 @@
 
 
 
+
+
+	  #contenedor-responsive {
+      width: 1500px;
+      height: 800px; 
+	
+      position: relative;
+	  background: -webkit-gradient(
+		linear,
+		left top, left bottom,
+		from(#c6bf40),
+		color-stop(50%, #c6bf40),
+		color-stop(50%, #aeb545),
+		to(#aeb545)
+		);
+	background: linear-gradient(
+		to bottom,
+		#c6bf40,
+	
+		#aeb545
+		);
+		background-size: 100%;
+    }
+
+
+
+	@media (max-width:991px) {
+		#contenedor-responsive {
+			width: 800px;
+			height: 450px; 
+		}
+	}
+
+ 
 
 
 	

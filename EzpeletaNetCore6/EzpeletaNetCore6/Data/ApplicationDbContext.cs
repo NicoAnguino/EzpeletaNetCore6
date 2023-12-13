@@ -27,6 +27,8 @@ namespace EzpeletaNetCore6.Data
 
         public DbSet<Models.GestionTarea.Tarea> Tareas { get; set; }
 
+        public DbSet<Models.Tenis.Pique> Piques { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Seed();

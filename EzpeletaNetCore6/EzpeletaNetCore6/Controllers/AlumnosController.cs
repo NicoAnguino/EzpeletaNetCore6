@@ -5,6 +5,7 @@ using EzpeletaNetCore6.Models.GestionAlumno;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using EzpeletaNetCore6.Models.Tenis;
 
 namespace EzpeletaNetCore6.Controllers;
 
@@ -27,6 +28,25 @@ public class AlumnosController : Controller
         ViewBag.CarreraID = new SelectList(carreras.OrderBy(c => c.Nombre), "CarreraID", "Nombre");
 
         return View();
+    }
+
+    public JsonResult GuardarPique(decimal Ejex, decimal Ejey, decimal Ancho, decimal Alto){
+
+        var piqueGuardar = new Pique{
+            EjeX = Ejex,
+            EjeY = Ejey,
+            WidthDevice = Ancho,
+            HeightDevice = Alto
+        };
+        _contexto.Add(piqueGuardar);
+        _contexto.SaveChanges();
+
+         return Json(true);
+    }
+
+    public JsonResult BuscarPiques(){
+        var piques = _contexto.Piques.ToList();
+        return Json(piques);
     }
 
 

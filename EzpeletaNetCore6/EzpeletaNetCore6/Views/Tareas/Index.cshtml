@@ -4,79 +4,84 @@
     ViewData["Title"] = "Listado de Tareas";
 }
 
-  <link href="css/cancha-tenis-1.0.0.css" rel="stylesheet" />
+<link href="css/cancha-tenis-1.0.0.css" rel="stylesheet" />
 
-<div class="grass" id="contenedor-responsive" onclick="insertarPelota(event)" onmousemove="getCursorPosition(event)" >
-    
-    <div class="court-container"  >
-    
-        <div class="court-outline"  >
-            <div class="court-aspect" >
-                <div class="court-boundaries" id="contenedor-campo" >
-                    <div class="singles-lines"></div>
-                    <div class="service-lines"></div>
-                    <div class="center-line"></div>
-                    <div class="center-line end left"></div>
-                    <div class="center-line end right"></div>
-                    <div class="net">
-                        <div class="post top"></div>
-                        <div class="post bottom"></div>
-                    </div>
-                    <div class="net-shadow"></div>
-                      <div id="info"></div>
-                    
-                
-                </div>
-            </div>
-        </div>
-    
-    </div>
-    
-    
+@* <div class="grass" id="contenedor-responsive" onclick="insertarPelota(event)" onmousemove="getCursorPosition(event)"
+>
+
+<div class="court-container" >
+
+<div class="court-outline" >
+<div class="court-aspect" >
+<div class="court-boundaries" id="contenedor-campo" >
+<div class="singles-lines"></div>
+<div class="service-lines"></div>
+<div class="center-line"></div>
+<div class="center-line end left"></div>
+<div class="center-line end right"></div>
+<div class="net">
+<div class="post top"></div>
+<div class="post bottom"></div>
+</div>
+<div class="net-shadow"></div>
+<div id="info"></div>
+
+
+</div>
+</div>
+</div>
+
+</div>
+
+
+</div> *@
+
+<div id="contenedor-responsive" onclick="insertarPelota(event)" onmousemove="getCursorPosition(event)">
+    <div id="contenedor-campo"></div>
 </div>
 
 
 @* <h2 class="text-white">Listado de Tareas</h2>
 
 <div class="row">
-    <p class="col-6">
-        <button class="btn btn-primary btn-sm" onclick="AbrirModal()">Nueva Tarea</button>
-    </p>
+<p class="col-6">
+<button class="btn btn-primary btn-sm" onclick="AbrirModal()">Nueva Tarea</button>
+</p>
 
-    <p class="col-6 text-right">
-        <button class="btn btn-success btn-sm" onclick="Imprimir()">Imprimir</button>
-    </p>
+<p class="col-6 text-right">
+<button class="btn btn-success btn-sm" onclick="Imprimir()">Imprimir</button>
+</p>
 </div>
 
 
 <div class="card mb-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Tareas Pendientes y Realizadas
-    </div>
-    <div class="card-body">
-        <table class="table table-bordered table-sm">
-            <thead>
-                <tr>
-                    <th class="text-center">
-                        Fecha
-                    </th>
-                    <th>
-                        Descripción
-                    </th>
-                    <th class="text-center">
-                        Prioridad
-                    </th>
-                    <th class="text-center">
-                        Estado
-                    </th>
-                    <th class="text-center" style="width:130px">Opciones</th>
-                </tr>
-            </thead>
-            <tbody id="tbody-tareas">
-            </tbody>
-        </table>
-    </div>
+<div class="card-header">
+<i class="fas fa-table me-1"></i>
+Tareas Pendientes y Realizadas
+</div>
+<div class="card-body">
+<table class="table table-bordered table-sm">
+<thead>
+<tr>
+<th class="text-center">
+Fecha
+</th>
+<th>
+Descripción
+</th>
+<th class="text-center">
+Prioridad
+</th>
+<th class="text-center">
+Estado
+</th>
+<th class="text-center" style="width:130px">Opciones</th>
+</tr>
+</thead>
+<tbody id="tbody-tareas">
+</tbody>
+</table>
+</div>
 </div> *@
 
 
@@ -155,43 +160,98 @@
     <script src="~/js/Tarea.js"></script>
 
     <script type="text/javascript">
-       // window.onload = CompletarTabla();
+        // window.onload = CompletarTabla();
     </script>
 
 
-<script>
-    function getCursorPosition(event) { 
-  var div = document.getElementById('contenedor-responsive'); 
-  var rect = div.getBoundingClientRect(); 
-  var x = event.clientX - rect.left; 
-  var y = event.clientY - rect.top; 
-    let _position = `X: ${x}<br>Y: ${y}<br>Rect.left: ${rect.left}<br>Rect.top: ${rect.top} <br> Resolución:   ${screen.width} x ${screen.height}px`;
-    //$("#contenedor-campo").append(`<div class="ball" style="top: ${y-45}px; left: ${x-45}px"></div>`);
+    <script>
 
-    y -= 45;
-    x -= 45;
 
-     const infoElement = document.getElementById('info');
-    infoElement.innerHTML = _position;
-    infoElement.style.top = y + "px";
-    infoElement.style.left = (x + 20) + "px";
 
-    //
-  
-} 
 
-function insertarPelota(event){
-      var div = document.getElementById('contenedor-responsive'); 
-  var rect = div.getBoundingClientRect(); 
-  var x = event.clientX - rect.left; 
-  var y = event.clientY - rect.top; 
-y -= 45;
-    x -= 45;
-$("#contenedor-campo").append(`<div class="ball" style="top: ${y}px; left: ${x}px"></div>`);
- console.log('Cursor position inside the div: x = ' + x + ', y = ' + y);
-}
 
-</script>
+
+
+
+
+
+
+
+
+        function getCursorPosition(event) {
+            var div = document.getElementById('contenedor-responsive');
+            var rect = div.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+            let _position = `X: ${x}<br>Y: ${y}<br>Rect.left: ${rect.left}<br>Rect.top: ${rect.top} <br> Resolución:   ${screen.width} x ${screen.height}px`;
+            //$("#contenedor-campo").append(`<div class="ball" style="top: ${y-45}px; left: ${x-45}px"></div>`);
+
+            //y -= 45;
+            //x -= 45;
+
+            const infoElement = document.getElementById('info');
+            infoElement.innerHTML = _position;
+            infoElement.style.top = y + "px";
+            infoElement.style.left = (x + 20) + "px";
+
+            //
+
+        }
+
+        function insertarPelota(event) {
+            var div = document.getElementById('contenedor-responsive');
+            var rect = div.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+            //y -= 45;
+            //  x -= 45;
+
+            y -= 8;
+            x -= 8;
+
+            var ancho = window.innerWidth;
+            var alto = window.innerHeight;
+
+            $.ajax({
+                type: "POST",
+                url: '../../Alumnos/GuardarPique',
+                data: { Ejex: x, Ejey: y, Ancho: ancho, Alto: alto },
+                success: function (resultado) {
+                    if (resultado) {
+                        CompletarTabla();
+                    }
+                    else {
+                        alert("No se puede eliminar porque contiene datos relacionados.");
+                    }
+                },
+                error: function (data) {
+                }
+            });
+
+
+            $("#contenedor-campo").append(`<div class="ball" style="top: ${y}px; left: ${x}px"></div>`);
+            console.log('Cursor position inside the div: x = ' + x + ', y = ' + y);
+        }
+
+        window.onload = BuscarPiques();
+        function BuscarPiques() {
+            $.ajax({
+                type: "POST",
+                url: '../../Alumnos/BuscarPiques',
+                data: {},
+                success: function (piques) {
+
+                    $.each(piques, function (index, pique) {
+                        $("#contenedor-campo").append(`<div class="ball" style="top: ${pique.ejeY}px; left: ${pique.ejeX}px"></div>`);
+                    });
+
+                },
+                error: function (data) {
+                }
+            });
+        }
+
+    </script>
 
     <script type="text/javascript">
         function Imprimir() {
