@@ -4,25 +4,7 @@
     ViewData["Title"] = "Listado de Tareas";
 }
 
-<link href="css/cancha-tenis-1.0.0.css" rel="stylesheet" />
-
-<div id="contenedor-responsive" onclick="insertarPelota(event)" onmousemove="getCursorPosition(event)">
-    <div id="contenedor-campo">
-        <div class="singles-lines"></div>
-        <div class="service-lines"></div>
-        <div class="center-line"></div>
-        <div class="center-line end left"></div>
-        <div class="center-line end right"></div>
-        <div class="net">
-            <div class="post top"></div>
-            <div class="post bottom"></div>
-        </div>
-        <div class="net-shadow"></div>
-    </div>
-</div>
-
-
-@* <h2 class="text-white">Listado de Tareas</h2>
+<h1>Listado de Tareas</h1>
 
 <div class="row">
 <p class="col-6">
@@ -63,7 +45,7 @@ Estado
 </tbody>
 </table>
 </div>
-</div> *@
+</div>
 
 
 <table id="imprimir" style="display: none;">
@@ -141,144 +123,9 @@ Estado
     <script src="~/js/Tarea.js"></script>
 
     <script type="text/javascript">
-        // window.onload = CompletarTabla();
-    </script>
+         window.onload = CompletarTabla();
 
-
-    <script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        function getCursorPosition(event) {
-            var div = document.getElementById('contenedor-responsive');
-            var rect = div.getBoundingClientRect();
-            var x = event.clientX - rect.left;
-            var y = event.clientY - rect.top;
-            let _position = `X: ${x}<br>Y: ${y}<br>Rect.left: ${rect.left}<br>Rect.top: ${rect.top} <br> Resolución:   ${screen.width} x ${screen.height}px`;
-            //$("#contenedor-campo").append(`<div class="ball" style="top: ${y-45}px; left: ${x-45}px"></div>`);
-
-            //y -= 45;
-            //x -= 45;
-
-            const infoElement = document.getElementById('info');
-            infoElement.innerHTML = _position;
-            infoElement.style.top = y + "px";
-            infoElement.style.left = (x + 20) + "px";
-
-            //
-
-        }
-
-        function insertarPelota(event) {
-            var div = document.getElementById('contenedor-responsive');
-            var rect = div.getBoundingClientRect();
-            var x = event.clientX - rect.left;
-            var y = event.clientY - rect.top;
-            //y -= 45;
-            //  x -= 45;
-
-            y -= 5;
-            x -= 5;
-
-            //var ancho = window.innerWidth;
-            //var alto = window.innerHeight;
-
-            var ancho = 0;
-            if (window.innerWidth < 991) {
-                ancho = window.innerWidth - 40;
-            }
-            else {
-                ancho = window.innerWidth - 270;
-            }
-            alto = 46.15 * ancho / 100;
-
-            $.ajax({
-                type: "POST",
-                url: '../../Alumnos/GuardarPique',
-                data: { Ejex: x, Ejey: y, Ancho: ancho, Alto: alto },
-                success: function (resultado) {
-                    if (resultado) {
-                        CompletarTabla();
-                    }
-                    else {
-                        alert("No se puede eliminar porque contiene datos relacionados.");
-                    }
-                },
-                error: function (data) {
-                }
-            });
-
-
-            $("#contenedor-campo").append(`<div class="ball" style="top: ${y}px; left: ${x}px"></div>`);
-            console.log('Cursor position inside the div: x = ' + x + ', y = ' + y);
-        }
-
-        window.onload = BuscarPiques();
-
-        function BuscarPiques() {
-            //AL BUSCAR LOS PIQUES DEBEMOS TENER EN CUENTA QUE RESOLUCION USA LA PANTALLA ACTUAL
-            //CON LA RESOLUCION QUE SE USO EN EL MOMENTO DE GUARDAR LOS PIQUES
-            var ancho = 0;
-            if (window.innerWidth < 991) {
-                ancho = window.innerWidth - 40;
-            }
-            else {
-                ancho = window.innerWidth - 270;
-            }
-            alto = 46.15 * ancho / 100;
-
-            var cancha = document.getElementById('contenedor-responsive');
-            cancha.style.width = ancho + 'px';
-            cancha.style.height = alto + 'px';
-
-            // alert(ancho + "X" + alto);
-
-            $.ajax({
-                type: "POST",
-                url: '../../Alumnos/BuscarPiques',
-                data: {},
-                success: function (piques) {
-
-                    $.each(piques, function (index, pique) {
-
-                        //VER EL ANCHO ORIGINAL
-                        //VER EL ANCHO ACTUAL
-                        let ejeY = pique.ejeY;
-                        if (pique.ejeY > 0) {
-                            ejeY = alto * pique.ejeY / pique.heightDevice;
-                        }
-
-                        //VER EL ALTO ORIGINAL
-                        //VER EL ALTO ACTUAL
-                        let ejeX = pique.ejeX;
-                        if (pique.ejeX > 0) {
-                            ejeX = ancho * pique.ejeX / pique.widthDevice;
-                        }
-
-                        $("#contenedor-campo").append(`<div class="ball" style="top: ${ejeY}px; left: ${ejeX}px"></div>`);
-                    });
-
-                },
-                error: function (data) {
-                }
-            });
-        }
-
-    </script>
-
-    <script type="text/javascript">
         function Imprimir() {
-
 
             var doc = new jsPDF();
 
@@ -348,12 +195,10 @@ Estado
                 }
             });
 
-
             // ESTO SE LLAMA ANTES DE ABRIR EL PDF PARA QUE MUESTRE EN EL PDF EL NRO TOTAL DE PAGINAS. ACA CALCULA EL TOTAL DE PAGINAS.
             if (typeof doc.putTotalPages === 'function') {
                 doc.putTotalPages(totalPagesExp);
             }
-
 
             // Output as Data URI.
 
@@ -364,7 +209,6 @@ Estado
             x.document.open();
             x.document.write(iframe);
             x.document.close();
-
         }
     </script>
 }

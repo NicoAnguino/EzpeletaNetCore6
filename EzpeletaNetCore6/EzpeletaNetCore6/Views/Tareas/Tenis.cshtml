@@ -1,81 +1,141 @@
 ﻿
-
 @{
     ViewData["Title"] = "s";
 }
 
+<link href="~/css/cancha-tenis-1.0.0.css" rel="stylesheet" />
 
-
-
-  <link href="css/cancha-tenis-1.0.0.css" rel="stylesheet" />
-
-@* <div id="escenario">
-  <input type="checkbox" id="conmutador-input">
-  <label for="conmutador-input" id="conmutador-label" title="Click to change the view"></label>
-  <div id="contenedor-responsive" onclick="getCursorPosition(event)" title="Responsive behavior, resize your browser ;)">
-      <div class="contenedor-campo" id="contenedor-campo">
-        
-        
-
-         
-
-        
-
-      </div>
-  </div>
-</div> *@
-
-
-<div class="grass">
-    
-    <div class="court-container">
-    
-        <div class="court-outline">
-            <div class="court-aspect">
-                <div class="court-boundaries">
-                    <div class="singles-lines"></div>
-                    <div class="service-lines"></div>
-                    <div class="center-line"></div>
-                    <div class="center-line end left"></div>
-                    <div class="center-line end right"></div>
-                    <div class="net">
-                        <div class="post top"></div>
-                        <div class="post bottom"></div>
-                    </div>
-                    <div class="net-shadow"></div>
-                    <div class="ball"></div>
-                    
-                    <div class="player left"></div>
-                    <div class="player right"></div>
-                </div>
-            </div>
+<div id="contenedor-responsive" onclick="insertarPelota(event)" onmousemove="getCursorPosition(event)">
+    <div id="contenedor-campo">
+        <div class="singles-lines"></div>
+        <div class="service-lines"></div>
+        <div class="center-line"></div>
+        <div class="center-line end left"></div>
+        <div class="center-line end right"></div>
+        <div class="net">
+            <div class="post top"></div>
+            <div class="post bottom"></div>
         </div>
-    
+        <div class="net-shadow"></div>
     </div>
-    
-    
 </div>
 
-
-
-
 @section Scripts {
+    <script>
+        function getCursorPosition(event) {
+            var div = document.getElementById('contenedor-responsive');
+            var rect = div.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+            let _position = `X: ${x}<br>Y: ${y}<br>Rect.left: ${rect.left}<br>Rect.top: ${rect.top} <br> Resolución:   ${screen.width} x ${screen.height}px`;
+            //$("#contenedor-campo").append(`<div class="ball" style="top: ${y-45}px; left: ${x-45}px"></div>`);
+
+            //y -= 45;
+            //x -= 45;
+
+            const infoElement = document.getElementById('info');
+            infoElement.innerHTML = _position;
+            infoElement.style.top = y + "px";
+            infoElement.style.left = (x + 20) + "px";
+
+            //
+
+        }
+
+        function insertarPelota(event) {
+            var div = document.getElementById('contenedor-responsive');
+            var rect = div.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+            //y -= 45;
+            //  x -= 45;
+
+            y -= 5;
+            x -= 5;
+
+            //var ancho = window.innerWidth;
+            //var alto = window.innerHeight;
+
+            var ancho = 0;
+            if (window.innerWidth < 991) {
+                ancho = window.innerWidth - 40;
+            }
+            else {
+                ancho = window.innerWidth - 270;
+            }
+            alto = 46.15 * ancho / 100;
+
+            $.ajax({
+                type: "POST",
+                url: '../../Alumnos/GuardarPique',
+                data: { Ejex: x, Ejey: y, Ancho: ancho, Alto: alto },
+                success: function (resultado) {
+                    if (resultado) {
+                        CompletarTabla();
+                    }
+                    else {
+                        alert("No se puede eliminar porque contiene datos relacionados.");
+                    }
+                },
+                error: function (data) {
+                }
+            });
 
 
+            $("#contenedor-campo").append(`<div class="ball" style="top: ${y}px; left: ${x}px"></div>`);
+            console.log('Cursor position inside the div: x = ' + x + ', y = ' + y);
+        }
 
-<script>
-    function getCursorPosition(event) { 
-  var div = document.getElementById('contenedor-responsive'); 
-  var rect = div.getBoundingClientRect(); 
-  var x = event.clientX - rect.left; 
-  var y = event.clientY - rect.top; 
- 
-    $("#contenedor-campo").append(`<div style="height: 15px; width:15px; background-color: #569b4a; border: 0.5px solid white; border-radius:10px; position:absolute; top: ${y-10}px; left: ${x-10}px"></div>`);
-    
-  console.log('Cursor position inside the div: x = ' + x + ', y = ' + y); 
-} 
+        window.onload = BuscarPiques();
 
-</script>
+        function BuscarPiques() {
+            //AL BUSCAR LOS PIQUES DEBEMOS TENER EN CUENTA QUE RESOLUCION USA LA PANTALLA ACTUAL
+            //CON LA RESOLUCION QUE SE USO EN EL MOMENTO DE GUARDAR LOS PIQUES
+            var ancho = 0;
+            if (window.innerWidth < 991) {
+                ancho = window.innerWidth - 40;
+            }
+            else {
+                ancho = window.innerWidth - 270;
+            }
+            alto = 46.15 * ancho / 100;
 
-   
+            var cancha = document.getElementById('contenedor-responsive');
+            cancha.style.width = ancho + 'px';
+            cancha.style.height = alto + 'px';
+
+            // alert(ancho + "X" + alto);
+
+            $.ajax({
+                type: "POST",
+                url: '../../Alumnos/BuscarPiques',
+                data: {},
+                success: function (piques) {
+
+                    $.each(piques, function (index, pique) {
+
+                        //VER EL ANCHO ORIGINAL
+                        //VER EL ANCHO ACTUAL
+                        let ejeY = pique.ejeY;
+                        if (pique.ejeY > 0) {
+                            ejeY = alto * pique.ejeY / pique.heightDevice;
+                        }
+
+                        //VER EL ALTO ORIGINAL
+                        //VER EL ALTO ACTUAL
+                        let ejeX = pique.ejeX;
+                        if (pique.ejeX > 0) {
+                            ejeX = ancho * pique.ejeX / pique.widthDevice;
+                        }
+
+                        $("#contenedor-campo").append(`<div class="ball" style="top: ${ejeY}px; left: ${ejeX}px"></div>`);
+                    });
+
+                },
+                error: function (data) {
+                }
+            });
+        }
+
+    </script>  
 }
