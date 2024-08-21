@@ -57,12 +57,15 @@ namespace EzpeletaNetCore6.Controllers
 
         public JsonResult BuscarArticulosLista(string nombre)
         {
-            //PRIMERO BUSCAR POR PERSONAS QUE NO TENGAN NOMBRE DE FANTASIA 
-            var articulos = _context.Articulos
-                                  .Where(x => x.Descripcion.Contains(nombre))
+            //PRIMERO BUSCAR POR PERSONAS QUE NO TENGAN NOMBRE DE FANTASIA
+            var articulos = new List<Articulo>();
+            if(nombre.Length >= 3){
+                articulos.AddRange(_context.Articulos
+                                  .Where(x => x.Descripcion.Contains(nombre))   
                                   .Take(50)
-                                  .ToList();
-
+                                  .ToList());
+            } 
+            
             return Json(articulos);
         }
 
@@ -80,6 +83,11 @@ namespace EzpeletaNetCore6.Controllers
 
             foreach (var articulo in articulos)
             {
+                string base64 = "";
+                if(articulo.Img != null){
+                    base64 = Convert.ToBase64String(articulo.Img);
+                }
+
                 var articuloMostrar = new VistaArticulo
                 {
                     ArticuloID = articulo.ArticuloID,
@@ -91,7 +99,9 @@ namespace EzpeletaNetCore6.Controllers
                     PrecioCosto = articulo.PrecioCosto,
                     PorcentajeGanancia = articulo.PorcentajeGanancia,
                     PrecioVenta = articulo.PrecioVenta,
-                    Eliminado = articulo.Eliminado
+                    Eliminado = articulo.Eliminado,
+                    ImagenBase64 = base64,
+                    TipoImg = articulo.TipoImg
                 };
                 articulosMostrar.Add(articuloMostrar);
             }
@@ -125,7 +135,7 @@ namespace EzpeletaNetCore6.Controllers
                         archivo.CopyTo(ms);
                         img = ms.ToArray();
                         tipoImg = archivo.ContentType;
-                        //string base64 = Convert.ToBase64String(img);
+                       
                         // act on the Base64 data
                     }
                 }

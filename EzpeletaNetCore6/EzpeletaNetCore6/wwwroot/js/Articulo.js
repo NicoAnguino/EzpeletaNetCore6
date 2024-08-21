@@ -18,6 +18,11 @@
                     botones = '<button type="button" onclick="EliminarArticulo(' + articulo.articuloID + ',0)" class="btn btn-warning btn-sm">Activar</button>';
                 }
 
+                let imagen = `<td></td>`;
+                if (articulo.imagenBase64) {
+                    imagen = `<td class="text-center"><img src="data:${articulo.tipoImg};base64, ${articulo.imagenBase64}" style="width: 100px;"/></td>`;
+                }
+
                 $("#tbody-articulos").append('<tr class=' + claseEliminado + '>' +
                     '<td>' + articulo.descripcion + '</td>' +
                     '<td>' + articulo.rubroNombre + '</td>' +
@@ -26,6 +31,7 @@
                     '<td class="text-right">$' + articulo.precioCosto.toFixed(2) + '</td>' +
                     '<td class="text-right">' + articulo.porcentajeGanancia.toFixed(2) + '%</td>' +
                     '<td class="text-right">$' + articulo.precioVenta.toFixed(2) + '</td>' +
+                    imagen +
                     '<td class="text-center">' +
                     botones +
                     '</td>' +
@@ -57,12 +63,12 @@ $("#ArticuloNombreBuscar").autocomplete({
             data: {
                 nombre: request.term
             },
-            success: function (data) {
+            success: function (articulos) {
 
-                response($.map(data, function (item) {
+                response($.map(articulos, function (articulo) {
                     return {
-                        id: item.articuloID,
-                        value: item.descripcion
+                        id: articulo.articuloID,
+                        value: articulo.descripcion
                     }
                 }))
             }
@@ -224,6 +230,7 @@ function BuscarArticulo(articuloID) {
     $("#ArticuloID").val(articuloID);
     $.ajax({
         type: "POST",
+        //async: false,
         url: '../../Articulos/BuscarArticulo',
         data: { ArticuloID: articuloID },
         success: function (articulo) {

@@ -35,5 +35,7 @@ namespace EzpeletaNetCore6.Models.CategoriaComercial
         public decimal PorcentajeGanancia { get; set; }
         public decimal PrecioVenta { get; set; }
         public bool Eliminado { get; set; }
+        public string? ImagenBase64 { get; set; }
+        public string? TipoImg { get; set; }
     }
 }
